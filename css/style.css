@@ -1,5 +1,7 @@
-body { font-family: Arial, sans-serif; margin: 20px; }
-.status { margin-top: 10px; }
-.status.success { color: green; }
-.status.error { color: red; }
-.status.warning { color: orange; }
+body {
+  background-image: url(https://plinkoverse.github.io/plinkoverseimage/PLINKOVERSE.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

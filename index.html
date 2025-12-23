@@ -23,12 +23,14 @@
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
-      /* Background image + dark overlay gradient */
+
+      /* Background image + dark overlay */
       background:
         linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
         url('https://plinkoverse.github.io/plinkoverseimage/PLINKOVERSE.jpg')
           no-repeat center center fixed;
       background-size: cover;
+
       color: var(--text);
       overflow-x: hidden;
     }
@@ -166,6 +168,7 @@
 </head>
 
 <body>
+
   <canvas id="fireworks"></canvas>
 
   <header>
@@ -220,14 +223,15 @@
     }
 
     function animate() {
-      ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
-      ctx.fillRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h); // <-- FIX: no more black overlay
+
       if (Math.random() < 0.1) fireworks.push(new Firework());
       fireworks.forEach((f, i) => {
         f.update();
         f.draw();
         if (f.alpha <= 0) fireworks.splice(i, 1);
       });
+
       requestAnimationFrame(animate);
     }
 
@@ -238,7 +242,6 @@
 
     animate();
   </script>
+
 </body>
 </html>
-
- 

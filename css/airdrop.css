@@ -1,0 +1,20 @@
+.airdrop-table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #ff00cc;
+}
+
+.airdrop-table th,
+.airdrop-table td {
+  padding: 0.75rem;
+  border: 1px solid #ff00cc;
+  color: #fff;
+}
+
+.airdrop-table th {
+  background: #ff00cc;
+  color: #000;
+  text-shadow: none;
+}

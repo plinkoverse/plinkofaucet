@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plinko Faucet</title>
+  <link rel="stylesheet" href="css/faucet.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🕹️ Plinko Token Faucet</h1>
+    <p class="subtext">Claim your free PKO tokens every 24 hours. Secure with 2FA.</p>
+
+    <button id="connectWallet">🔗 CONNECT WALLET</button>
+
+    <form id="claimForm" style="display:none;">
+      <label for="totp">Enter 2FA Code:</label>
+      <input type="text" id="totp" name="totp" maxlength="6" required />
+      <button type="submit">💧 Claim Faucet</button>
+    </form>
+
+    <p id="statusMessage"></p>
+  </div>
+
+  <script src="js/faucet.js"></script>
+</body>
+</html>

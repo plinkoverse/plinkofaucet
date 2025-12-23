@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PLINKOVERSE | Claim. Grow. Repeat.</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d0d0d;
-      --card: #1a1a1a;
-      --accent: #00ffcc;
-      --text: #e0e0e0;
+      --bg: #0a0a0a;
+      --glass: rgba(255, 255, 255, 0.05);
+      --accent: #00ffc3;
+      --text: #e0f7f7;
       --muted: #888;
     }
     * {
@@ -18,8 +18,8 @@
     }
     body {
       margin: 0;
-      font-family: 'Manrope', sans-serif;
-      background-color: var(--bg);
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(ellipse at bottom, #0a0a0a 0%, #000 100%);
       color: var(--text);
       overflow-x: hidden;
     }
@@ -28,63 +28,54 @@
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: radial-gradient(circle at center, rgba(0,255,204,0.05), transparent 70%),
-                  repeating-linear-gradient(0deg, rgba(0,255,204,0.03) 0, transparent 1px, transparent 20px),
-                  repeating-linear-gradient(90deg, rgba(0,255,204,0.03) 0, transparent 1px, transparent 20px);
+      background: repeating-linear-gradient(0deg, rgba(0,255,195,0.03) 0, transparent 1px, transparent 40px),
+                  repeating-linear-gradient(90deg, rgba(0,255,195,0.03) 0, transparent 1px, transparent 40px);
+      animation: gridMove 20s linear infinite;
       z-index: 0;
+    }
+    @keyframes gridMove {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 0 100px, 100px 0; }
     }
     header {
       text-align: center;
       padding: 5rem 2rem 2rem;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      border-bottom: 1px solid #333;
     }
     .hero-title {
       font-size: 4rem;
       color: var(--accent);
-      animation: fadeInUp 1s ease-out;
+      text-shadow: 0 0 10px var(--accent);
       margin-bottom: 0.5rem;
-      letter-spacing: 2px;
     }
     .subtext {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--muted);
-      animation: fadeInUp 1.5s ease-out;
-    }
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
     .hero {
       text-align: center;
       padding: 3rem 2rem;
-      background: var(--card);
-      border-radius: 12px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
       margin: 2rem auto;
       max-width: 900px;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+      box-shadow: 0 0 30px rgba(0, 255, 195, 0.1);
     }
     .orb {
       width: 160px;
       height: 160px;
-      margin: 0 auto 1rem;
+      margin: 0 auto 1.5rem;
       border-radius: 50%;
-      background: radial-gradient(circle, #00ffcc 0%, #0d0d0d 70%);
-      box-shadow: 0 0 30px #00ffcc88, 0 0 60px #00ffcc44;
+      background: radial-gradient(circle, #00ffc3 0%, #0a0a0a 70%);
+      box-shadow: 0 0 40px #00ffc388, 0 0 80px #00ffc344;
       animation: pulse 3s infinite ease-in-out;
     }
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 30px #00ffcc88, 0 0 60px #00ffcc44; }
-      50% { box-shadow: 0 0 50px #00ffccaa, 0 0 80px #00ffcc66; }
+      0%, 100% { box-shadow: 0 0 40px #00ffc388, 0 0 80px #00ffc344; }
+      50% { box-shadow: 0 0 60px #00ffc3aa, 0 0 100px #00ffc366; }
     }
     .hero p {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--muted);
       margin-top: 1rem;
     }
@@ -96,23 +87,25 @@
       align-items: center;
     }
     .cta button {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 1rem 2rem;
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 0.9rem 2rem;
       font-size: 1rem;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s ease;
-      width: 220px;
+      transition: all 0.3s ease;
+      width: 240px;
+      backdrop-filter: blur(6px);
     }
     .cta button:hover {
-      background: #00e6b8;
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 20px var(--accent);
     }
     footer {
       text-align: center;
       padding: 2rem;
-      background-color: #0a0a0a;
       font-size: 0.9rem;
       color: #666;
     }
@@ -185,7 +178,7 @@
     }
 
     function animate() {
-      ctx.fillStyle = 'rgba(13, 13, 13, 0.1)';
+      ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
       ctx.fillRect(0, 0, w, h);
       if (Math.random() < 0.1) fireworks.push(new Firework());
       fireworks.forEach((f, i) => {

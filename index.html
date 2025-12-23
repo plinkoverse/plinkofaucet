@@ -3,95 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plink Coin | The Future of DeFi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <title>Plinko Faucet | Claim Crypto Daily</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #0d0d0d;
+      --card: #1a1a1a;
+      --accent: #00ffcc;
+      --text: #e0e0e0;
+      --muted: #888;
+    }
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: #fff;
+      font-family: 'Manrope', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
     }
     header {
-      padding: 2rem;
       text-align: center;
-      background-color: rgba(0, 0, 0, 0.6);
+      padding: 4rem 2rem 2rem;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      border-bottom: 1px solid #333;
     }
-    header h1 {
-      font-size: 3rem;
-      background: linear-gradient(90deg, #ff00cc, #3333ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero-title {
+      font-size: 3.5rem;
+      color: var(--accent);
+      animation: fadeInUp 1s ease-out;
+      margin-bottom: 0.5rem;
+    }
+    .subtext {
+      font-size: 1.2rem;
+      color: var(--muted);
+      animation: fadeInUp 1.5s ease-out;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     .hero {
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 3rem 2rem;
+      background: var(--card);
+      border-radius: 12px;
+      margin: 2rem auto;
+      max-width: 900px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
     }
     .hero img {
-      width: 200px;
-      margin-bottom: 1rem;
+      width: 140px;
+      filter: drop-shadow(0 0 5px var(--accent));
+      border-radius: 50%;
     }
     .hero p {
       font-size: 1.2rem;
-      color: #ccc;
+      color: var(--muted);
+      margin-top: 1rem;
     }
-    .roadmap {
-      padding: 3rem 2rem;
-      background-color: #1a1a2e;
+    .cta {
+      margin-top: 2rem;
     }
-    .roadmap h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #ff6ec4;
+    .cta button {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
-    .milestone {
-      margin: 1.5rem 0;
-      padding: 1rem;
-      border-left: 4px solid #ff6ec4;
-      background-color: #2a2a40;
-    }
-    .milestone h3 {
-      margin: 0;
-      color: #f9f871;
-    }
-    .milestone p {
-      margin: 0.5rem 0 0;
-      color: #ccc;
+    .cta button:hover {
+      background: #00e6b8;
     }
     footer {
       text-align: center;
       padding: 2rem;
-      background-color: #0f0c29;
+      background-color: #0a0a0a;
       font-size: 0.9rem;
-      color: #888;
+      color: #666;
+    }
+    #fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    body > *:not(canvas) {
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
 
+  <canvas id="fireworks"></canvas>
+
   <header>
-    <h1>🚀 Plink Coin</h1>
-    <p>The playful future of decentralized finance</p>
+    <h1 class="hero-title">Claim. Grow. Repeat.</h1>
+    <p class="subtext">The faucet that rewards consistency, not clicks.</p>
   </header>
 
   <section class="hero">
     <img src="https://cryptologos.cc/logos/polkadot-new-dot-logo.png" alt="Plink Logo" />
-    <p>Welcome to Plink — where DeFi meets fun, food, and futuristic finance.</p>
+    <p>Welcome to the next-gen faucet experience. No ads, no gimmicks — just clean, secure, daily crypto rewards.</p>
+    <div class="cta">
+      <button onclick="alert('2FA required to claim!')">💧 Claim 25 PLINK</button>
+    </div>
   </section>
 
-  <section class="roadmap">
-    <h2>🗺️ Plink Coin Roadmap</h2>
+  <footer>
+    &copy; 2026 Plink Labs. Built with 💧, 💻, and 🔒.
+  </footer>
 
-    <div class="milestone">
-      <h3>Q1 2026 — Genesis Drop</h3>
-      <p>Launch of Plink Coin with 8-bit retro airdrop campaign and NFT minting.</p>
-    </div>
+  <script>
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+    const fireworks = [];
 
-    <div class="milestone">
-      <h3>Q2 2026 — PlinkSwap Beta</h3>
-      <p>Launch of our playful DEX with sushi-inspired UI and gamified liquidity pools.</p>
-    </div>
+    class Firework {
+      constructor() {
+        this.x = Math.random() * w;
+        this.y = h;
+        this.radius = 2;
+        this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        this.velocityY = -Math.random() * 7 - 3;
+        this.gravity = 0.15;
+        this.alpha = 1;
+      }
+      update() {
+        this.y += this.velocityY;
+        this.velocityY += this.gravity;
+        this.alpha -= 0.01;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
 
-    <div class="milestone">
+    function animate() {
+      ctx.fillStyle = 'rgba(13, 13, 13, 0.1)';
+      ctx.fillRect(0, 0, w, h);
+      if (Math.random() < 0.1) fireworks.push(new Firework());
+      fireworks.forEach((f, i) => {
+        f.update();
+        f.draw();
+        if (f.alpha <= 0) fireworks.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+
+    animate();
+  </script>
+
+</body>
+</html>

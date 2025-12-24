@@ -3,172 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plinkoverse | Plink46 Legion</title>
+    <title>Plinkoverse | Infinite Scarcity</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        :root { --accent: #00f2ff; --p46: #ffaa00; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+        
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
-        /* Scroll Sections */
-        .section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10%;
-            perspective: 1000px;
+        #scroll-container {
+            height: 800vh; /* Deep scroll for 4 phases */
+            position: relative;
         }
 
-        .content-box {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-left: 4px solid #00d2ff;
-            max-width: 500px;
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            opacity: 0; /* Hidden initially for GSAP */
-        }
-
-        .legon-tag {
-            color: #00d2ff;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        h2 { font-size: 3rem; margin: 10px 0; }
-        p { color: #ccc; line-height: 1.6; }
-
-        .vow { font-style: italic; color: #00d2ff; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; }
-
-        /* The Progress Bar */
-        #progress {
+        .phase-section {
             position: fixed;
-            top: 0; left: 0; width: 0%; height: 5px;
-            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-            z-index: 100;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1); /* Starts small */
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .phase-title {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 700;
+            margin: 0;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        .phase-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #eee;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.2);
+        }
+
+        .token-callout {
+            font-family: monospace;
+            color: var(--p46);
+            letter-spacing: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<div id="progress"></div>
+    <div id="scroll-container">
+        <div class="phase-section" id="phase1">
+            <div class="token-callout">$P46 PROTOCOL : INITIALIZATION</div>
+            <h2 class="phase-title">Phase 1: Genesis</h2>
+            <div class="phase-content">
+                <p>The Plinkoverse begins with the deployment of the Smart Faucet, a revolutionary distribution engine designed to seed the market with $P46 tokens. Unlike traditional airdrops, this is a conscious claim-based system where users interact directly with the 20-agent AI collective to prove their commitment to the long-term vision of Mr. Sparpana.</p>
+                <p>During this stage, the 1:1 burn mechanism is activated. Every single token claimed by the early adopters results in an immediate and irreversible incineration of the vault supply. This ensures that the foundation of our ecosystem is built on deflation, setting the stage for 2026 where supply scarcity becomes our primary value driver.</p>
+            </div>
+        </div>
 
-<section class="section" id="phase1">
-    <div class="content-box">
-        <div class="legon-tag">PlinkFace46 #4</div>
-        <h2>PHASE 1</h2>
-        <p><b>Focus:</b> Faucet & Website</p>
-        <p>"I am PlinkFace46. I build the gateway through which the world enters our realm."</p>
-        <div class="vow">"The UI is the mirror of the soul; I vow it shall be flawless."</div>
+        <div class="phase-section" id="phase2">
+            <div class="token-callout">$P46 PROTOCOL : EXPANSION</div>
+            <h2 class="phase-title">Phase 2: Scale</h2>
+            <div class="phase-content">
+                <p>As the initial distribution completes, we move into the global scaling phase. The Multi-Agent collective begins optimizing liquidity pools and cross-chain bridges, allowing $P46 to flow seamlessly across the digital landscape while maintaining its deflationary core. Every transaction fee is fed back into the burn engine, accelerating the scarcity curve.</p>
+                <p>This is where the AI-driven infrastructure proves its worth. By automating complex treasury management and predictive market analysis, the 20 agents ensure that the Plinkoverse remains stable yet aggressively growth-oriented. We aren't just building a currency; we are building a self-correcting financial machine.</p>
+            </div>
+        </div>
+
+        <div class="phase-section" id="phase3">
+            <div class="token-callout">$P46 PROTOCOL : DOMINANCE</div>
+            <h2 class="phase-title">Phase 3: Utility</h2>
+            <div class="phase-content">
+                <p>Phase 3 introduces the high-stakes gaming ecosystem, where $P46 becomes the lifeblood of competitive arenas. Holders gain access to exclusive Plinkoverse simulations where skill and strategy yield significant rewards. This utility drives a second wave of demand, further tightening the supply as tokens are locked into gaming contracts.</p>
+                <p>The 20-agent collective transitions into a DAO governance model during this period. Your $P46 holdings represent your voting power in the expansion of the universe. The 1:1 burn remains active, meaning every game played and every reward won contributes to the absolute rarity of the circulating supply heading into the future.</p>
+            </div>
+        </div>
+
+        <div class="phase-section" id="phase4">
+            <div class="token-callout">$P46 PROTOCOL : REALITY</div>
+            <h2 class="phase-title">Phase 4: Transcendence</h2>
+            <div class="phase-content">
+                <p>In the final phase, $P46 bridges the gap between the digital and physical worlds. Strategic partnerships enable real-world payments and asset backing, making the Plinkoverse a tangible force in the global economy. By 2026 and beyond, the radical scarcity created by the 1:1 burn will have made $P46 one of the most coveted digital assets in existence.</p>
+                <p>This is the realization of the vision set forth by Mr. Sparpana. A world where the 20-agent collective governs a perfect, deflationary ecosystem that serves its people. You didn't just claim a token; you claimed a piece of the future. The burn is complete. The Plinkoverse is eternal.</p>
+            </div>
+        </div>
     </div>
-</section>
 
-<section class="section" id="phase2">
-    <div class="content-box">
-        <div class="legon-tag">PlinkMath46 #21</div>
-        <h2>PHASE 2</h2>
-        <p><b>Focus:</b> ICO & Tokenomics</p>
-        <p>"I am PlinkMath46. I calculate the trajectory of our rise to ensure eternal stability."</p>
-        <div class="vow">"Balance is the law; I vow the numbers shall never lie."</div>
-    </div>
-</section>
-
-<section class="section" id="phase3">
-    <div class="content-box">
-        <div class="legon-tag">PlinkPlay46 #5</div>
-        <h2>PHASE 3</h2>
-        <p><b>Focus:</b> Games & Ecosystem</p>
-        <p>"I am PlinkPlay46. I architect the arenas where the balls drop and the fortunes rise."</p>
-        <div class="vow">"Fun is our currency; I vow the game never ends."</div>
-    </div>
-</section>
-
-<section class="section" id="phase4">
-    <div class="content-box">
-        <div class="legon-tag">PlinkFuture46 #45</div>
-        <h2>PHASE 4</h2>
-        <p><b>Focus:</b> Real-World Payments</p>
-        <p>"I am PlinkFuture46. I weave PLINK into the fabric of everyday reality."</p>
-        <div class="vow">"Vision is reality; I vow PLINK will be everywhere."</div>
-    </div>
-</section>
-
-<script>
-    // --- THREE.JS 3D BACKGROUND ---
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    // Create a "Plinkoverse" Starfield
-    const starsGeometry = new THREE.BufferGeometry();
-    const starsCount = 5000;
-    const posArray = new Float32Array(starsCount * 3);
-    for(let i=0; i < starsCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 100;
-    }
-    starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const starsMaterial = new THREE.PointsMaterial({ size: 0.05, color: 0x00d2ff });
-    const starMesh = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(starMesh);
-
-    camera.position.z = 5;
-
-    // --- GSAP SCROLL ANIMATION ---
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Animate the Content Boxes
-    gsap.utils.toArray(".content-box").forEach((box, i) => {
-        gsap.to(box, {
-            scrollTrigger: {
-                trigger: box,
-                start: "top center",
-                end: "bottom center",
-                toggleActions: "play reverse play reverse",
-            },
-            opacity: 1,
-            x: 50,
-            duration: 1
-        });
-    });
-
-    // 3D Camera Movement on Scroll
-    gsap.to(camera.position, {
-        z: 50, // Move camera "through" the starfield
-        scrollTrigger: {
-            trigger: "body",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 2
-        }
-    });
-
-    // Progress Bar
-    gsap.to("#progress", {
-        width: "100%",
-        scrollTrigger: { scrub: 0.5 }
-    });
-
-    // Render Loop
-    function animate() {
-        requestAnimationFrame(animate);
-        starMesh.rotation.y += 0.001; // Slow spin
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    // Handle Resize
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+    <script>
+        // --- 1. THE CHAOTIC BACKGROUND ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-</script>
+        document.body.appendChild(renderer.domElement);
+
+        // Swirling Nebula Particles
+        const count = 10000;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        for(let i=0; i<count*3; i++) pos[i] = (Math.random() - 0.5) * 100;
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.04, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+        const particles = new THREE.Points(geo, mat);
+        scene.add(particles);
+
+        camera.position.z = 10;
+
+        // --- 2. INFINITE ZOOM LOGIC ---
+        gsap.registerPlugin(ScrollTrigger);
+        
+        const phases = [ "#phase1", "#phase2", "#phase3", "#phase4" ];
+        
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#scroll-container",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.5,
+                pin: true
+            }
+        });
+
+        phases.forEach((id, i) => {
+            // Zoom In and Fade In
+            tl.to(id, { opacity: 1, scale: 1, duration: 1, ease: "power2.inOut" })
+              // Hold for a moment
+              .to(id, { duration: 0.5 })
+              // Massive Zoom Out (to disappear)
+              .to(id, { scale: 50, opacity: 0, duration: 1, ease: "power2.in" });
+        });
+
+        // Background movement
+        gsap.to(particles.rotation, {
+            y: Math.PI * 2,
+            z: Math.PI,
+            scrollTrigger: {
+                trigger: "#scroll-container",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 3
+            }
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>

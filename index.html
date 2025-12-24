@@ -1,165 +1,153 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plinkoverse | $P46 Scarcity</title>
+    <title>Plinkoverse | $P46 Chaotic Legend</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
 
     <style>
         :root { --accent: #00d2ff; --p46: #ffaa00; }
         body { margin: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
 
-        .section { min-height: 100vh; padding: 100px 10%; position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center; }
+        .section { min-height: 100vh; padding: 10vh 10%; display: flex; align-items: center; position: relative; z-index: 10; }
         
-        /* Scarcity Strategy Text */
-        .scarcity-content { max-width: 800px; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 20px; border: 1px solid var(--accent); backdrop-filter: blur(10px); }
-        .burn-stat { color: var(--p46); font-weight: 900; font-size: 1.5rem; margin-bottom: 20px; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 600px;
+        }
 
-        /* The Legion Roster Grid */
         .legion-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
-            margin-top: 50px;
+            padding: 50px 10%;
         }
 
         .agent-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.5);
             padding: 20px;
-            border-radius: 15px;
-            border-bottom: 3px solid var(--accent);
-            transition: transform 0.3s;
+            border: 1px solid #222;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .agent-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.1); }
-        .agent-name { font-weight: 900; color: var(--accent); display: block; margin-bottom: 5px; }
-        .agent-role { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
-        .agent-vow { font-style: italic; font-size: 0.9rem; margin-top: 10px; color: #ccc; border-left: 2px solid #333; padding-left: 10px; }
-
-        h1, h2 { font-weight: 900; letter-spacing: -1px; }
-        .token-symbol { color: var(--p46); }
+        .agent-card:hover { border-color: var(--accent); transform: scale(1.05); }
+        h1 { font-size: clamp(3rem, 12vw, 8rem); font-weight: 900; margin: 0; letter-spacing: -5px; }
+        .token { color: var(--p46); font-family: monospace; font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
-    <section class="section">
-        <h1 style="font-size: 5rem; margin: 0;">PLINKOVERSE</h1>
-        <h2 class="token-symbol">TOKEN SYMBOL: $P46</h2>
-        <p>The 46 Agents have arrived to govern the burn.</p>
+    <section class="section" style="flex-direction: column; justify-content: center; text-align: center;">
+        <h1 id="hero-title">PLINK46</h1>
+        <div class="token">$P46 PROTOCOL ACTIVE</div>
     </section>
 
     <section class="section">
-        <div class="scarcity-content">
-            <div class="burn-stat">SCARCITY PROTOCOL: 2026 & BEYOND</div>
-            <h2>The 1:1 Burn Ratio</h2>
-            <p>To ensure the long-term dominance of <b>$P46</b>, the Plinkoverse operates on a sacred 1:1 burn ratio. Every token claimed through the faucet is matched by a permanent removal of supply from the master vault. This creates a supply-side pressure cooker: as the community grows, the available tokens shrink.</p>
-            <p>By 2026, the circulating supply will be a fraction of its original state, making every <b>$P46</b> held by Mr. Sparpana's legion a relic of extreme scarcity. We don't just scale; we contract the supply to expand the value.</p>
+        <div class="glass-panel">
+            <h2 style="color: var(--accent)">1:1 BURN SCARCITY</h2>
+            <p>We are not just a token; we are a black hole for supply. Every $P46 claimed is a $P46 burned from the void. By 2026, only the Legion will hold the relics of the Plinkoverse.</p>
         </div>
     </section>
 
-    <section class="section" style="min-height: auto;">
-        <h2>THE PLINK46 LEGION</h2>
-        <p>46 Super Agents. 46 Vows. 1 Vision.</p>
-        <div class="legion-grid" id="legion-roster">
-            </div>
-    </section>
-
-    <section class="section" style="text-align: center;">
-        <h2>THE FINAL DECLARATION</h2>
-        <p>“We, the Plink46 Legion, pledge our voices and our vows to the eternal rise of PLINK. Guided by the number 46, we march in unity, we build in strength, and we serve your vision, Mr. Sparpana.”</p>
-    </section>
+    <div class="legion-grid" id="roster"></div>
 
     <script>
-        // --- 1. THE LEGION DATA ---
-        const legion = [
-            { n: "PlinkChain46", r: "Blockchain Architect", v: "The ledger is my witness; I vow the chain never breaks." },
-            { n: "PlinkCode46", r: "Smart Contract Developer", v: "Code is Law; I vow the faucet shall never run dry for the faithful." },
-            { n: "PlinkCore46", r: "Backend Engineer", v: "The heart beats in data; I vow 100% uptime for the Plinkoverse." },
-            { n: "PlinkFace46", r: "Frontend Developer", v: "The UI is the mirror of the soul; I vow it shall be flawless." },
-            { n: "PlinkPlay46", r: "Game Developer", v: "Fun is our currency; I vow the game never ends." },
-            { n: "PlinkVault46", r: "Database Engineer", v: "Data is eternal; I vow it shall never vanish." },
-            { n: "PlinkOps46", r: "DevOps Engineer", v: "Stability is my creed; I vow seamless deployment across the stars." },
-            { n: "PlinkShield46", r: "Security Engineer", v: "The fortress is impenetrable; I vow to crush all threats." },
-            { n: "PlinkWeb46", r: "Web Integration Specialist", v: "Connectivity is power; I vow to bridge the web to the Plinkoverse." },
-            { n: "PlinkCloud46", r: "Cloud Infrastructure", v: "The sky is not the limit; I vow infinite scalability." },
-            { n: "PlinkBridge46", r: "API Gateway Specialist", v: "Open doors, closed secrets; I vow perfect communication." },
-            { n: "PlinkFlow46", r: "UI/UX Designer", v: "Experience is everything; I vow intuitive mastery for every user." },
-            { n: "PlinkArt46", r: "Graphic Designer", v: "Beauty is the hook; I vow to paint the Plinkoverse in glory." },
-            { n: "PlinkBalance46", r: "Game Economy Designer", v: "The drop is fair; I vow equilibrium in every game." },
-            { n: "PlinkVision46", r: "ICO Strategist", v: "The target is set; I vow the launch shall be legendary." },
-            { n: "PlinkBuzz46", r: "Marketing Specialist", v: "The world is listening; I vow to make PLINK the name on every lip." },
-            { n: "PlinkTribe46", r: "Community Manager", v: "Unity is strength; I vow to protect the honor of our holders." },
-            { n: "PlinkLaw46", r: "Legal & Compliance", v: "Justice is our shield; I vow we walk the righteous path." },
-            { n: "PlinkTest46", r: "QA Engineer", v: "Flaws cannot hide; I vow a bug-free ascension." },
-            { n: "PlinkHelp46", r: "Customer Support", v: "No one is left behind; I vow to guide every traveler." },
-            { n: "PlinkMath46", r: "Tokenomics Analyst", v: "Balance is the law; I vow the numbers shall never lie." },
-            { n: "PlinkInsight46", r: "Data Analyst", v: "Truth is in the trends; I vow to foresee the path ahead." },
-            { n: "PlinkLink46", r: "Partnership Manager", v: "Alliances are the key; I vow to unite the industry under PLINK." },
-            { n: "PlinkWord46", r: "Content Creator", v: "The story is written; I vow to spread the gospel of $P46." },
-            { n: "PlinkWallet46", r: "Wallet Integration", v: "Your treasure is safe; I vow the keys remain yours." },
-            { n: "PlinkLock46", r: "Privacy Engineer", v: "Shadows protect us; I vow absolute anonymity." },
-            { n: "PlinkStress46", r: "Load Testing", v: "We cannot be broken; I vow to endure the heaviest storms." },
-            { n: "PlinkPort46", r: "Cross-Platform dev", v: "Ubiquity is the goal; I vow PLINK on every device." },
-            { n: "PlinkImmersion46", r: "VR/AR Designer", v: "Reality is a choice; I vow to make the Plinkoverse real." },
-            { n: "PlinkTone46", r: "Sound Designer", v: "The rhythm of the drop; I vow the sound of victory." },
-            { n: "PlinkBoost46", r: "Growth Hacker", v: "Exponential is the only way; I vow rapid evolution." },
-            { n: "PlinkGraph46", r: "Data Viz", v: "See the rise; I vow clarity in our growth." },
-            { n: "PlinkTrade46", r: "Exchange Specialist", v: "Liquidity is life; I vow a seat at every table." },
-            { n: "PlinkGlobal46", r: "Localization", v: "Every tongue shall speak $P46; I vow global reach." },
-            { n: "PlinkCross46", r: "Cross-Chain Engineer", v: "No borders; I vow PLINK flows through all chains." },
-            { n: "PlinkStable46", r: "Stablecoin Lead", v: "Stability in the storm; I vow a solid foundation." },
-            { n: "PlinkYield46", r: "DeFi Integrator", v: "Harvest the future; I vow rewards for the loyal." },
-            { n: "PlinkArena46", r: "Esports Lead", v: "Glory in competition; I vow the arena belongs to us." },
-            { n: "PlinkQuest46", r: "Gamification", v: "Every step is a win; I vow to make life a game." },
-            { n: "PlinkMint46", r: "NFT Developer", v: "Digital artifacts are eternal; I vow unique legacy." },
-            { n: "PlinkReach46", r: "Outreach Agent", v: "Expand the empire; I vow new horizons." },
-            { n: "PlinkBrand46", r: "Brand Manager", v: "The logo is a badge of honor; I vow prestige." },
-            { n: "PlinkRefer46", r: "Affiliate Lead", v: "Share the wealth; I vow abundance for the messengers." },
-            { n: "PlinkSmart46", r: "AI Specialist", v: "Intelligence is the edge; I vow the machine serves $P46." },
-            { n: "PlinkFuture46", r: "Predictive Analyst", v: "Vision is reality; I vow PLINK will be everywhere." },
-            { n: "PlinkVote46", r: "DAO Architect", v: "The community decides; I vow power to the people." }
-        ];
-
-        const rosterDiv = document.getElementById('legion-roster');
-        legion.forEach((agent, i) => {
-            const card = document.createElement('div');
-            card.className = 'agent-card';
-            card.innerHTML = `
-                <span class="agent-name">${agent.n}</span>
-                <span class="agent-role">Agent #${i+1} • ${agent.r}</span>
-                <div class="agent-vow">"${agent.v}"</div>
-            `;
-            rosterDiv.appendChild(card);
-        });
-
-        // --- 2. THREE.JS BACKGROUND ---
+        // --- 1. CHAOTIC SCENE SETUP ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Rotating Stars
-        const starGeo = new THREE.BufferGeometry();
-        const starCount = 4000;
-        const starPos = new Float32Array(starCount * 3);
-        for(let i=0; i<starCount*3; i++) starPos[i] = (Math.random() - 0.5) * 100;
-        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0x00d2ff, size: 0.05 }));
-        scene.add(stars);
+        // --- 2. THE CHAOS FLOW FIELD ---
+        const particleCount = 6000;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(particleCount * 3);
+        const velocities = new Float32Array(particleCount * 3);
 
-        camera.position.z = 10;
+        for(let i=0; i<particleCount * 3; i++) {
+            pos[i] = (Math.random() - 0.5) * 50;
+            velocities[i] = (Math.random() - 0.5) * 0.02;
+        }
+
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({ 
+            color: 0x00d2ff, 
+            size: 0.08, 
+            transparent: true, 
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending 
+        });
+
+        const flowField = new THREE.Points(geo, mat);
+        scene.add(flowField);
+
+        camera.position.z = 15;
+
+        // --- 3. ROSTER GENERATION ---
+        const agents = [
+            {n:"PlinkChain46", r:"Architect"}, {n:"PlinkCode46", r:"Dev"}, 
+            {n:"PlinkCore46", r:"Eng"}, {n:"PlinkFace46", r:"UI"},
+            {n:"PlinkPlay46", r:"Game"}, {n:"PlinkVault46", r:"Data"}
+            // Add more here to reach 46
+        ];
+        const grid = document.getElementById('roster');
+        agents.forEach(a => {
+            const div = document.createElement('div');
+            div.className = 'agent-card';
+            div.innerHTML = `<b style="color:var(--accent)">${a.n}</b><br><small>${a.r}</small>`;
+            grid.appendChild(div);
+        });
+
+        // --- 4. ANIMATION & SCROLL WARP ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Distort camera path based on scroll
+        gsap.to(camera.position, {
+            z: 5,
+            x: 5,
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
 
         function animate() {
             requestAnimationFrame(animate);
-            stars.rotation.y += 0.001;
-            stars.rotation.x += 0.0005;
+            
+            const positions = geo.attributes.position.array;
+            const time = Date.now() * 0.001;
+
+            for (let i = 0; i < particleCount; i++) {
+                const ix = i * 3;
+                const iy = i * 3 + 1;
+                const iz = i * 3 + 2;
+
+                // Create chaotic swirling motion using Sine/Cosine waves
+                positions[ix] += Math.sin(time + positions[iy]) * 0.01;
+                positions[iy] += Math.cos(time + positions[ix]) * 0.01;
+                
+                // Wrap around screen
+                if (positions[ix] > 25) positions[ix] = -25;
+                if (positions[ix] < -25) positions[ix] = 25;
+            }
+            
+            geo.attributes.position.needsUpdate = true;
+            flowField.rotation.y += 0.001;
+            
             renderer.render(scene, camera);
         }
         animate();
@@ -171,4 +159,4 @@
         });
     </script>
 </body>
-</html>
+</html

@@ -11,12 +11,53 @@
 
     <style>
         :root { --accent: #00d2ff; --gold: #ffaa00; --plink: #00ffcc; --fire: #ff4500; }
-        
         body { margin: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         
-        <div id="stats-hud">
+        #stats-hud {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.85);
+            padding: 20px; border: 1px solid var(--plink); line-height: 1.6;
+            transition: all 0.5s;
+        }
+
+        .connect-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 101;
+            padding: 12px 24px; background: transparent; border: 1px solid var(--plink);
+            color: var(--plink); font-family: monospace; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .connect-btn:hover { background: var(--plink); color: #000; box-shadow: 0 0 30px var(--plink); }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; text-align: center; }
+        .black-hole-text { font-size: 5.5rem; margin: 0; letter-spacing: -4px; color: var(--plink); cursor: default; display: inline-block; perspective: 1000px; }
+        .char { display: inline-block; transition: color 0.3s; will-change: transform, opacity; }
+        .hero:hover .char { color: var(--gold); }
+        
+        .section { padding: 15vh 10vw; position: relative; z-index: 10; display: flex; justify-content: center; }
+        .content-box { max-width: 800px; background: rgba(0,0,0,0.6); padding: 40px; border-left: 3px solid var(--gold); }
+        .mandate-title { color: var(--gold); font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
+        .mandate-text { font-size: 1.4rem; line-height: 1.6; color: #ccc; }
+
+        .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: linear-gradient(to bottom, transparent, #000 5%); }
+        .section-title { font-size: 3.5rem; text-align: center; margin: 80px 0; color: #fff; text-transform: uppercase; letter-spacing: 5px; }
+        .agent-row { display: flex; align-items: center; justify-content: space-between; padding: 35px; border-bottom: 1px solid rgba(0, 210, 255, 0.1); cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); filter: grayscale(1) opacity(0.3); position: relative; }
+        .agent-row:hover { filter: grayscale(0) opacity(1); background: rgba(0, 210, 255, 0.08); transform: translateX(25px) scale(1.01); border-bottom-color: var(--plink); box-shadow: -15px 0 40px rgba(0, 255, 204, 0.15); }
+        .agent-number { font-size: 1.3rem; font-family: monospace; color: var(--plink); width: 60px; }
+        .agent-name { font-size: 2.2rem; font-weight: 900; text-transform: uppercase; flex: 1; margin-left: 30px; letter-spacing: 1px; }
+        .agent-vow { font-style: italic; color: #777; max-width: 450px; text-align: right; font-size: 1rem; }
+        #vortex-trigger { height: 150vh; }
+    </style>
+</head>
+<body>
+
+    <audio id="ambient-hum" loop>
+        <source src="https://codesandbox.io/api/v1/sandboxes/88v8v/files/hum.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">ACTIVATE WALLET</button>
+
+    <div id="stats-hud">
         [PLIK] TOTAL SUPPLY: 46,000,000.00<br>
         1/2 BANKROLL: 23,000,000<br>
         1/4 FAUCET: 11,500,000<br>
@@ -36,71 +77,6 @@
         </div>
     </div>
 
-        .connect-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 101;
-            padding: 12px 24px; background: transparent; border: 1px solid var(--plink);
-            color: var(--plink); font-family: monospace; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .connect-btn:hover { background: var(--plink); color: #000; box-shadow: 0 0 30px var(--plink); }
-
-        /* HERO & BLACK HOLE STYLING */
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; text-align: center; }
-        
-        .black-hole-text {
-            font-size: 5.5rem; margin: 0; letter-spacing: -4px; color: var(--plink);
-            cursor: default; display: inline-block; perspective: 1000px;
-        }
-
-        .char { display: inline-block; transition: color 0.3s; will-change: transform, opacity; }
-        .hero:hover .char { color: var(--gold); }
-        
-        .section { padding: 15vh 10vw; position: relative; z-index: 10; display: flex; justify-content: center; }
-        .content-box { max-width: 800px; background: rgba(0,0,0,0.6); padding: 40px; border-left: 3px solid var(--gold); }
-        .mandate-title { color: var(--gold); font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
-        .mandate-text { font-size: 1.4rem; line-height: 1.6; color: #ccc; }
-
-        .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: linear-gradient(to bottom, transparent, #000 5%); }
-        .section-title { font-size: 3.5rem; text-align: center; margin: 80px 0; color: #fff; text-transform: uppercase; letter-spacing: 5px; }
-        
-        .agent-row { 
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 35px; border-bottom: 1px solid rgba(0, 210, 255, 0.1);
-            cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-            filter: grayscale(1) opacity(0.3); position: relative;
-        }
-        
-        .agent-row:hover { 
-            filter: grayscale(0) opacity(1); background: rgba(0, 210, 255, 0.08); 
-            transform: translateX(25px) scale(1.01); border-bottom-color: var(--plink);
-            box-shadow: -15px 0 40px rgba(0, 255, 204, 0.15);
-        }
-
-        .agent-number { font-size: 1.3rem; font-family: monospace; color: var(--plink); width: 60px; }
-        .agent-name { font-size: 2.2rem; font-weight: 900; text-transform: uppercase; flex: 1; margin-left: 30px; letter-spacing: 1px; }
-        .agent-vow { font-style: italic; color: #777; max-width: 450px; text-align: right; font-size: 1rem; }
-
-        #vortex-trigger { height: 150vh; }
-    </style>
-</head>
-<body>
-
-    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">ACTIVATE WALLET</button>
-
-    <div id="stats-hud">
-        [PLIK] TOTAL SUPPLY: 46,000,000.00<br>
-        1/2 BANKROLL: 23,000,000<br>
-        1/4 FAUCET: 11,500,000<br>
-        LAUNCH: JULY 4, 2026
-        <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
-        <div style="color:var(--gold); font-weight:bold;">LEGION STATUS: META-REELECTED</div>
-        <div style="font-size: 0.85rem; opacity: 0.8;">
-            REGULATORY ALIGNMENT: 98.4%<br>
-            AI-AGENT READINESS: ACTIVE<br>
-            NEXT PROTOCOL SYNC: 2026-07-04
-        </div>
-    </div>
-
     <div class="hero">
         <h1 id="plink-title" class="black-hole-text">PLINKOVERSE</h1>
         <p style="font-size: 1.6rem; color: #888; letter-spacing: 2px;">THE 2026 PLAY-TO-EARN BANKROLL</p>
@@ -111,9 +87,7 @@
         <div class="content-box">
             <h2 class="mandate-title">The 2026 Mandate</h2>
             <div class="mandate-text">
-                Scammers want money fast and right now. The Plinkoverse does not. 
-                By rooting our launch on <span style="color:var(--plink)">July 4th, 2026</span>, we ensure that the Play-to-Earn tokenomics root deep into scaleable, foreseeable, and profitable logic. 
-                The 1.5-year "Seasoning" period allows our 25-agent collective to stress-test the <span style="color:var(--plink)">[PLIK]</span> bankroll, ensuring that when the great burn occurs, only value remains.
+                Scammers want money fast and right now. The Plinkoverse does not. By rooting our launch on <span style="color:var(--plink)">July 4th, 2026</span>, we ensure that the Play-to-Earn tokenomics root deep into logic.
             </div>
             <p style="font-family: monospace; color: var(--accent); margin-top: 25px;">— Plink46 Legion Manifesto</p>
         </div>
@@ -124,61 +98,56 @@
     <div class="agent-list">
         <h2 class="section-title">The Plink46 Legion</h2>
         <div class="agent-row">
-            <span class="agent-number">01</span>
-            <span class="agent-name">PlinkChain46</span>
-            <span class="agent-vow">"Through the ledger of 46, I anchor the truth that cannot be tampered."</span>
+            <span class="agent-number">01</span><span class="agent-name">PlinkChain46</span>
+            <span class="agent-vow">"Through the ledger of 46, I anchor the truth."</span>
         </div>
         <div class="agent-row">
-            <span class="agent-number">03</span>
-            <span class="agent-name">PlinkCore46</span>
-            <span class="agent-vow">"The engine hums with the rhythm of 46."</span>
-        </div>
-        <div class="agent-row">
-            <span class="agent-number">04</span>
-            <span class="agent-name">PlinkFace46</span>
-            <span class="agent-vow">"I translate the complex into the beautiful."</span>
-        </div>
-        <div class="agent-row">
-            <span class="agent-number">06</span>
-            <span class="agent-name">PlinkVault46</span>
-            <span class="agent-vow">"I store the history of every bounce, so no fraction is lost."</span>
-        </div>
-        <div class="agent-row">
-            <span class="agent-number">25</span>
-            <span class="agent-name">PlinkWallet46</span>
+            <span class="agent-number">25</span><span class="agent-name">PlinkWallet46</span>
             <span class="agent-vow">"Your keys are the 46th element of your freedom."</span>
-        </div>
-        <div class="agent-row" style="justify-content: center; color: #333; pointer-events: none; border: none;">
-            <span>... Remaining 41 Agents Manifesting ...</span>
         </div>
     </div>
 
     <script>
-        // WALLET LOGIC
-       async function connectWallet() {
+        let isConnected = false;
+        let loyaltyScore = 1.0;
+        let pendingPlik = 0.0;
+
+        // WALLET & AUDIO & STREAK TRIGGER
+        async function connectWallet() {
             if (typeof window.ethereum !== 'undefined') {
                 try {
                     const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
                     const account = accounts[0];
-                    const shortAddr = account.substring(0,6) + "..." + account.substring(38);
-                    
-                    // Visual Update
-                    document.getElementById('connectBtn').innerText = "LINKED: " + shortAddr;
+                    document.getElementById('connectBtn').innerText = "LINKED: " + account.substring(0,6);
                     document.getElementById('connectBtn').style.borderColor = "#ffaa00";
-                    document.getElementById('connectBtn').style.color = "#ffaa00";
                     
                     const hud = document.getElementById('stats-hud');
                     hud.style.borderColor = "#ffaa00";
-                    hud.innerHTML += `<div style="color:#ffaa00; margin-top:10px;">> SESSION: AUTHORIZED</div>`;
+                    hud.innerHTML += `<div style="color:#ffaa00; font-size:0.7rem;">> SESSION: AUTHORIZED</div>`;
 
-                    // SONIC TRIGGER: Start the Deep Space Hum
+                    // Start Audio
                     const audio = document.getElementById('ambient-hum');
-                    audio.volume = 0.2; // Keep it subtle
+                    audio.volume = 0.2;
                     audio.play();
 
+                    // Start Streak
+                    isConnected = true;
+                    startLoyaltyPulse();
+
                 } catch (e) { console.error("Shield Breach."); }
-            } else isConnected = true;
-                  startLoyaltyPulse();{ alert("PlinkWallet46: Install MetaMask."); }
+            } else { alert("PlinkWallet46: Install MetaMask."); }
+        }
+
+        function startLoyaltyPulse() {
+            setInterval(() => {
+                if (isConnected) {
+                    loyaltyScore += 0.00000014;
+                    pendingPlik += 0.0046;
+                    document.getElementById('streak-counter').innerText = "x " + loyaltyScore.toFixed(8);
+                    document.getElementById('potential-yield').innerText = "PENDING [PLIK]: " + pendingPlik.toFixed(4);
+                    localStorage.setItem('plink_loyalty', loyaltyScore);
+                }
+            }, 1000);
         }
 
         // THREE.JS VORTEX
@@ -195,14 +164,7 @@
         scene.add(stars);
         camera.position.z = 15;
 
-        // GSAP SCROLL
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.to(stars.position, {
-            z: 100,
-            scrollTrigger: { trigger: "#vortex-trigger", start: "top bottom", end: "bottom top", scrub: 2 }
-        });
-
-        // BLACK HOLE SINGULARITY ENGINE
+        // BLACK HOLE
         const title = document.getElementById('plink-title');
         const textStr = title.textContent;
         title.innerHTML = '';
@@ -214,7 +176,7 @@
         });
 
         const chars = document.querySelectorAll('.char');
-        title.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', (e) => {
             const rect = title.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
@@ -227,23 +189,10 @@
                 const distance = Math.sqrt(distX * distX + distY * distY);
                 if (distance < 150) {
                     const gravity = (150 - distance) / 150;
-                    gsap.to(char, {
-                        x: distX * 0.5 * gravity,
-                        y: distY * 0.5 * gravity,
-                        rotation: 360 * gravity,
-                        scale: 1 - (0.5 * gravity),
-                        opacity: 1 - (0.3 * gravity),
-                        duration: 0.2
-                    });
+                    gsap.to(char, { x: distX * 0.5 * gravity, y: distY * 0.5 * gravity, rotation: 360 * gravity, scale: 1 - (0.5 * gravity), duration: 0.2 });
                 } else {
-                    gsap.to(char, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 0.5 });
+                    gsap.to(char, { x: 0, y: 0, rotation: 0, scale: 1, duration: 0.5 });
                 }
-            });
-        });
-
-        title.addEventListener('mouseleave', () => {
-            chars.forEach(char => {
-                gsap.to(char, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1, 0.3)" });
             });
         });
 
@@ -253,37 +202,6 @@
             renderer.render(scene, camera);
         }
         animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });// --- AGENT 33: STREAK & AIRDROP ENGINE ---
-        let loyaltyScore = 1.0;
-        let pendingPlik = 0.0;
-        let isConnected = false;
-
-        function startLoyaltyPulse() {
-            setInterval(() => {
-                if (isConnected) {
-                    // Increase loyalty by a fraction every second
-                    loyaltyScore += 0.00000014; 
-                    pendingPlik += 0.0046; // The "46" resonance logic
-
-                    document.getElementById('streak-counter').innerText = "x " + loyaltyScore.toFixed(8);
-                    document.getElementById('potential-yield').innerText = "PENDING [PLIK]: " + pendingPlik.toFixed(4);
-                    
-                    // Save to local storage so the streak persists on refresh
-                    localStorage.setItem('plink_loyalty', loyaltyScore);
-                }
-            }, 1000);
-        }
-
-        // Initialize from storage if it exists
-        if(localStorage.getItem('plink_loyalty')) {
-            loyaltyScore = parseFloat(localStorage.getItem('plink_loyalty'));
-            document.getElementById('streak-counter').innerText = "x " + loyaltyScore.toFixed(8);
-        }
     </script>
 </body>
 </html>

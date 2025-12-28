@@ -1,24 +1,123 @@
-/* LUSION DEEP-SPACE LAYER */
-#deep-space-bg {
-    position: fixed;
-    top: -5%; /* Slightly larger than viewport to allow for movement */
-    left: -5%;
-    width: 110%;
-    height: 110%;
-    background: url('../assets/bg-singularity.webp') no-repeat center center;
-    background-size: cover;
-    z-index: -2; /* Behind the Three.js canvas */
-    filter: brightness(0.6) contrast(1.1); /* Ensures text remains readable */
-    pointer-events: none;
-    transition: transform 0.1s ease-out;
+/* SPAR PANA - PLINKOVERSE CORE STYLES v4.0 */
+:root {
+    --plink: #00ffcc;
+    --gold: #ffaa00;
+    --deep: #050505;
+    --glass: rgba(0, 0, 0, 0.6);
 }
 
-/* Optional: Add a subtle vignette to focus the center black hole */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--deep);
+    color: #fff;
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* 🌌 LUSION BACKGROUND LAYER */
+#deep-space-bg {
+    position: fixed;
+    top: -10%; 
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: url('../assets/bg-singularity.webp') no-repeat center center;
+    background-size: cover;
+    z-index: -2;
+    filter: brightness(0.7) contrast(1.2);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* VIGNETTE OVERLAY */
 body::after {
     content: '';
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+    background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.9) 100%);
     z-index: -1;
     pointer-events: none;
+}
+
+/* 🪟 GLASS HUD */
+#stats-hud {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    z-index: 100;
+    padding: 20px;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* ⚓ HERO SECTION */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 10vw, 8rem);
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+/* 👥 AGENT LISTING */
+#agent-list-container {
+    max-width: 900px;
+    margin: 0 auto 100px;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.agent-row {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    margin-bottom: 15px;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: border 0.3s;
+}
+
+.agent-number { color: var(--plink); font-weight: bold; width: 40px; }
+.agent-name { font-weight: 800; font-size: 1.2rem; flex-grow: 1; }
+.agent-vow { opacity: 0.6; font-style: italic; font-size: 0.9rem; }
+
+/* 🧪 UTILITY CLASSES */
+.gravity-item {
+    display: inline-block;
+    will-change: transform;
+}
+
+.connect-btn {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    padding: 12px 24px;
+    background: var(--plink);
+    color: #000;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
 }

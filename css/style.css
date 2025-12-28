@@ -1,7 +1,37 @@
-body {
-  background-image: url(https://plinkoverse.github.io/plinkoverseimage/PLINKOVERSE.jpg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+:root { --accent: #00d2ff; --gold: #ffaa00; --plink: #00ffcc; --fire: #ff4500; }
+
+body { 
+    margin: 0; background: #000; color: #fff; 
+    font-family: 'Inter', sans-serif; overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
+
+/* The HUD */
+#stats-hud {
+    position: fixed; top: 20px; left: 20px; z-index: 100;
+    font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.85);
+    padding: 20px; border: 1px solid var(--plink); line-height: 1.6;
+}
+
+/* Universal Singularity Class */
+.gravity-item {
+    display: inline-block;
+    will-change: transform;
+    transition: color 0.3s;
+}
+
+.hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; }
+.hero h1 { font-size: 6rem; color: var(--plink); letter-spacing: -5px; }
+
+.agent-row { 
+    display: flex; align-items: center; padding: 40px; 
+    border-bottom: 1px solid rgba(0,210,255,0.1); cursor: pointer;
+    z-index: 10; position: relative;
+}
+
+.share-btn {
+    margin-top: 15px; padding: 10px; border: 1px solid var(--gold);
+    color: var(--gold); background: transparent; cursor: pointer; font-family: monospace;
 }

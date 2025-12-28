@@ -14,10 +14,8 @@
         
         body { margin: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
-        /* 3D STARFIELD BACKGROUND */
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         
-        /* THE HUD: LIVE PROTOCOL DATA */
         #stats-hud {
             position: fixed; top: 20px; left: 20px; z-index: 100;
             font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.85);
@@ -25,7 +23,6 @@
             pointer-events: none; transition: all 0.5s;
         }
 
-        /* ACTIVATE BUTTON */
         .connect-btn {
             position: fixed; top: 20px; right: 20px; z-index: 101;
             padding: 12px 24px; background: transparent; border: 1px solid var(--plink);
@@ -34,16 +31,22 @@
         }
         .connect-btn:hover { background: var(--plink); color: #000; box-shadow: 0 0 30px var(--plink); }
 
-        /* HERO & MANDATE */
+        /* HERO & BLACK HOLE STYLING */
         .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; text-align: center; }
-        .hero h1 { font-size: 5.5rem; margin: 0; letter-spacing: -4px; color: var(--plink); }
+        
+        .black-hole-text {
+            font-size: 5.5rem; margin: 0; letter-spacing: -4px; color: var(--plink);
+            cursor: default; display: inline-block; perspective: 1000px;
+        }
+
+        .char { display: inline-block; transition: color 0.3s; will-change: transform, opacity; }
+        .hero:hover .char { color: var(--gold); }
         
         .section { padding: 15vh 10vw; position: relative; z-index: 10; display: flex; justify-content: center; }
         .content-box { max-width: 800px; background: rgba(0,0,0,0.6); padding: 40px; border-left: 3px solid var(--gold); }
         .mandate-title { color: var(--gold); font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
         .mandate-text { font-size: 1.4rem; line-height: 1.6; color: #ccc; }
 
-        /* AGENT ROSTER: LUSION STYLE */
         .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: linear-gradient(to bottom, transparent, #000 5%); }
         .section-title { font-size: 3.5rem; text-align: center; margin: 80px 0; color: #fff; text-transform: uppercase; letter-spacing: 5px; }
         
@@ -86,7 +89,7 @@
     </div>
 
     <div class="hero">
-        <h1>PLINKOVERSE</h1>
+        <h1 id="plink-title" class="black-hole-text">PLINKOVERSE</h1>
         <p style="font-size: 1.6rem; color: #888; letter-spacing: 2px;">THE 2026 PLAY-TO-EARN BANKROLL</p>
         <p style="color: var(--fire); font-family: monospace; margin-top: 40px; border: 1px solid var(--fire); padding: 5px 15px;">SCROLL DOWN THE HOLE</p>
     </div>
@@ -107,69 +110,60 @@
 
     <div class="agent-list">
         <h2 class="section-title">The Plink46 Legion</h2>
-        
         <div class="agent-row">
             <span class="agent-number">01</span>
             <span class="agent-name">PlinkChain46</span>
             <span class="agent-vow">"Through the ledger of 46, I anchor the truth that cannot be tampered."</span>
         </div>
-
         <div class="agent-row">
             <span class="agent-number">03</span>
             <span class="agent-name">PlinkCore46</span>
             <span class="agent-vow">"The engine hums with the rhythm of 46."</span>
         </div>
-
         <div class="agent-row">
             <span class="agent-number">04</span>
             <span class="agent-name">PlinkFace46</span>
             <span class="agent-vow">"I translate the complex into the beautiful."</span>
         </div>
-
         <div class="agent-row">
             <span class="agent-number">06</span>
             <span class="agent-name">PlinkVault46</span>
             <span class="agent-vow">"I store the history of every bounce, so no fraction is lost."</span>
         </div>
-
         <div class="agent-row">
             <span class="agent-number">25</span>
             <span class="agent-name">PlinkWallet46</span>
             <span class="agent-vow">"Your keys are the 46th element of your freedom."</span>
         </div>
-        
         <div class="agent-row" style="justify-content: center; color: #333; pointer-events: none; border: none;">
             <span>... Remaining 41 Agents Manifesting ...</span>
         </div>
     </div>
 
     <script>
-        // AGENT 25: WALLET LOGIC
+        // WALLET LOGIC
         async function connectWallet() {
             if (typeof window.ethereum !== 'undefined') {
                 try {
                     const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
                     const account = accounts[0];
                     const shortAddr = account.substring(0,6) + "..." + account.substring(38);
-                    
                     document.getElementById('connectBtn').innerText = "LINKED: " + shortAddr;
                     document.getElementById('connectBtn').style.borderColor = "#ffaa00";
                     document.getElementById('connectBtn').style.color = "#ffaa00";
-                    
                     const hud = document.getElementById('stats-hud');
                     hud.style.borderColor = "#ffaa00";
                     hud.innerHTML += `<div style="color:#ffaa00; margin-top:10px;">> SESSION: AUTHORIZED</div>`;
                 } catch (e) { console.error("Shield Breach."); }
-            } else { alert("PlinkWallet46: Install MetaMask to proceed."); }
+            } else { alert("PlinkWallet46: Install MetaMask."); }
         }
 
-        // THREE.JS: STAR VORTEX
+        // THREE.JS VORTEX
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
-
         const starGeo = new THREE.BufferGeometry();
         const starPos = new Float32Array(9000 * 3);
         for(let i=0; i<9000*3; i++) starPos[i] = (Math.random() - 0.5) * 180;
@@ -178,24 +172,61 @@
         scene.add(stars);
         camera.position.z = 15;
 
-        // GSAP: SCROLL ORCHESTRATION
+        // GSAP SCROLL
         gsap.registerPlugin(ScrollTrigger);
-        
         gsap.to(stars.position, {
             z: 100,
-            scrollTrigger: {
-                trigger: "#vortex-trigger",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 2
-            }
+            scrollTrigger: { trigger: "#vortex-trigger", start: "top bottom", end: "bottom top", scrub: 2 }
         });
 
-        // ANIMATION LOOP
+        // BLACK HOLE SINGULARITY ENGINE
+        const title = document.getElementById('plink-title');
+        const textStr = title.textContent;
+        title.innerHTML = '';
+        [...textStr].forEach(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.className = 'char';
+            title.appendChild(span);
+        });
+
+        const chars = document.querySelectorAll('.char');
+        title.addEventListener('mousemove', (e) => {
+            const rect = title.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            chars.forEach(char => {
+                const cRect = char.getBoundingClientRect();
+                const charX = cRect.left + cRect.width / 2 - rect.left;
+                const charY = cRect.top + cRect.height / 2 - rect.top;
+                const distX = mouseX - charX;
+                const distY = mouseY - charY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+                if (distance < 150) {
+                    const gravity = (150 - distance) / 150;
+                    gsap.to(char, {
+                        x: distX * 0.5 * gravity,
+                        y: distY * 0.5 * gravity,
+                        rotation: 360 * gravity,
+                        scale: 1 - (0.5 * gravity),
+                        opacity: 1 - (0.3 * gravity),
+                        duration: 0.2
+                    });
+                } else {
+                    gsap.to(char, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 0.5 });
+                }
+            });
+        });
+
+        title.addEventListener('mouseleave', () => {
+            chars.forEach(char => {
+                gsap.to(char, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
         function animate() {
             requestAnimationFrame(animate);
             stars.rotation.y += 0.0004;
-            stars.rotation.x += 0.0001;
             renderer.render(scene, camera);
         }
         animate();

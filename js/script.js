@@ -54,4 +54,17 @@ function initUniversalGravity() {
             }
         });
     });
+}async function syncTokenomics() {
+    try {
+        const response = await fetch('data/ico.json');
+        const ico = await response.json();
+        
+        // Update the HUD with real data from JSON
+        const supplyEl = document.querySelector('.total-supply-display');
+        if(supplyEl) supplyEl.innerText = `[PLIK] TOTAL SUPPLY: ${ico.total_supply.toLocaleString()}`;
+        
+        console.log("Legion Sync: Tokenomics Manifested.");
+    } catch (e) {
+        console.warn("Sync Failed: The ledger is currently in the shadow.");
+    }
 }

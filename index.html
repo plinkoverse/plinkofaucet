@@ -4,52 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PLINKOVERSE | [PLIK] Legion</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
+
     <style>
-        :root { --accent: #00d2ff; --gold: #ffaa00; --plink: #00ffcc; }
+        :root { --accent: #00d2ff; --gold: #ffaa00; --plink: #00ffcc; --fire: #ff4500; }
         body { margin: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         
-        .section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 10; }
-        .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: rgba(0,0,0,0.8); }
+        #stats-hud {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.8);
+            padding: 15px; border: 1px solid var(--plink); line-height: 1.4;
+            pointer-events: none;
+        }
+
+        .connect-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 101;
+            padding: 12px 24px; background: transparent; border: 1px solid var(--plink);
+            color: var(--plink); font-family: monospace; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .connect-btn:hover { background: var(--plink); color: #000; box-shadow: 0 0 20px var(--plink); }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; text-align: center; }
+        .hero h1 { font-size: 5rem; margin: 0; letter-spacing: -3px; color: var(--plink); text-shadow: 0 0 30px rgba(0,255,204,0.3); }
+
+        .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: linear-gradient(to bottom, transparent, #000 10%); }
         
         .agent-row { 
             display: flex; align-items: center; justify-content: space-between;
-            padding: 40px; border-bottom: 1px solid #222;
-            cursor: pointer; transition: all 0.4s;
-            filter: grayscale(1);
+            padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: all 0.4s; filter: grayscale(1) opacity(0.5);
         }
         
         .agent-row:hover { 
-            filter: grayscale(0); background: rgba(0, 210, 255, 0.1); 
-            transform: translateX(20px); border-bottom-color: var(--plink);
+            filter: grayscale(0) opacity(1); background: rgba(0, 210, 255, 0.05); 
+            transform: translateX(15px); border-bottom-color: var(--plink);
         }
 
-        .agent-number { font-size: 1.5rem; font-family: monospace; color: var(--plink); }
-        .agent-name { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; }
-        .agent-vow { font-style: italic; color: #888; max-width: 400px; text-align: right; }
+        .agent-number { font-size: 1.2rem; font-family: monospace; color: var(--plink); width: 50px; }
+        .agent-name { font-size: 2rem; font-weight: 800; text-transform: uppercase; flex: 1; margin-left: 20px; }
+        .agent-vow { font-style: italic; color: #888; max-width: 400px; text-align: right; font-size: 0.9rem; }
 
-        #stats-hud {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.7);
-            padding: 15px; border: 1px solid var(--plink);
-        }
+        .section-title { font-size: 3rem; text-align: center; margin: 100px 0; color: var(--gold); text-transform: uppercase; }
     </style>
 </head>
 <body>
 
+    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">ACTIVATE WALLET</button>
+
     <div id="stats-hud">
         [PLIK] TOTAL SUPPLY: 46,000,000.00000000<br>
-        1/2 BANKROLL: 23,000,000 | 1/4 FAUCET: 11,500,000<br>
-        PHASE: GENESIS | LAUNCH: JULY 4, 2026
+        1/2 BANKROLL: 23,000,000<br>
+        1/4 FAUCET: 11,500,000<br>
+        LAUNCH: JULY 4, 2026
     </div>
 
-    <div id="vortex-trigger" style="height: 300vh;"></div>
+    <div class="hero">
+        <h1>PLINKOVERSE</h1>
+        <p style="font-size: 1.5rem; color: #888;">The 2026 Play-to-Earn Bankroll</p>
+        <p style="color: var(--fire); font-family: monospace;">SCROLL DOWN THE HOLE</p>
+    </div>
+
+    <div id="vortex-trigger" style="height: 200vh;"></div>
 
     <div class="agent-list">
-        <h2 style="font-size: 4rem; text-align: center; margin-bottom: 100px;">THE PLINK46 LEGION</h2>
+        <h2 class="section-title">The Plink46 Legion</h2>
         
         <div class="agent-row">
             <span class="agent-number">01</span>
@@ -64,15 +88,34 @@
         </div>
 
         <div class="agent-row">
-            <span class="agent-number">08</span>
-            <span class="agent-name">PlinkShield46</span>
-            <span class="agent-vow">"I am the wall against which the scammers break."</span>
+            <span class="agent-number">25</span>
+            <span class="agent-name">PlinkWallet46</span>
+            <span class="agent-vow">"Your keys are the 46th element of your freedom."</span>
         </div>
         
+        <div class="agent-row" style="justify-content: center; color: #444;">
+            <span>... Remaining 43 Agents Manifesting ...</span>
         </div>
+    </div>
 
     <script>
-        // --- THREE.JS ENGINE ---
+        // --- AGENT 25: WALLET CONNECTION LOGIC ---
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    document.getElementById('connectBtn').innerText = account.substring(0,6) + "..." + account.substring(38);
+                    console.log("PlinkWallet46: Secure Connection Established.");
+                } catch (error) {
+                    console.error("Shield Breach: User denied access.");
+                }
+            } else {
+                alert("PlinkWallet46: MetaMask not detected. Install to proceed.");
+            }
+        }
+
+        // --- THREE.JS VORTEX ENGINE ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -80,26 +123,50 @@
         document.body.appendChild(renderer.domElement);
 
         const starGeo = new THREE.BufferGeometry();
-        const starPos = new Float32Array(6000 * 3);
-        for(let i=0; i<6000*3; i++) starPos[i] = (Math.random() - 0.5) * 100;
+        const starPos = new Float32Array(8000 * 3);
+        for(let i=0; i<8000*3; i++) starPos[i] = (Math.random() - 0.5) * 150;
         starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0x00d2ff, size: 0.05}));
+        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0x00d2ff, size: 0.04}));
         scene.add(stars);
         camera.position.z = 10;
 
-        // --- GSAP SCROLL ---
+        // --- GSAP SCROLL ORCHESTRATION ---
         gsap.registerPlugin(ScrollTrigger);
+        
         gsap.to(stars.position, {
-            z: 50,
-            scrollTrigger: { trigger: "#vortex-trigger", scrub: 2, start: "top top", end: "bottom bottom" }
+            z: 80,
+            scrollTrigger: {
+                trigger: "#vortex-trigger",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 2
+            }
+        });
+
+        gsap.to(".hero", {
+            opacity: 0,
+            y: -100,
+            scrollTrigger: {
+                trigger: "#vortex-trigger",
+                start: "top top",
+                end: "center top",
+                scrub: true
+            }
         });
 
         function animate() {
             requestAnimationFrame(animate);
-            stars.rotation.y += 0.001;
+            stars.rotation.y += 0.0005;
+            stars.rotation.x += 0.0002;
             renderer.render(scene, camera);
         }
         animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>

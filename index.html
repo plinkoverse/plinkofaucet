@@ -11,46 +11,60 @@
 
     <style>
         :root { --accent: #00d2ff; --gold: #ffaa00; --plink: #00ffcc; --fire: #ff4500; }
+        
         body { margin: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
+        /* 3D STARFIELD BACKGROUND */
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         
+        /* THE HUD: LIVE PROTOCOL DATA */
         #stats-hud {
             position: fixed; top: 20px; left: 20px; z-index: 100;
-            font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.8);
-            padding: 15px; border: 1px solid var(--plink); line-height: 1.4;
-            pointer-events: none;
+            font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.85);
+            padding: 20px; border: 1px solid var(--plink); line-height: 1.6;
+            pointer-events: none; transition: all 0.5s;
         }
 
+        /* ACTIVATE BUTTON */
         .connect-btn {
             position: fixed; top: 20px; right: 20px; z-index: 101;
             padding: 12px 24px; background: transparent; border: 1px solid var(--plink);
             color: var(--plink); font-family: monospace; cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .connect-btn:hover { background: var(--plink); color: #000; box-shadow: 0 0 20px var(--plink); }
+        .connect-btn:hover { background: var(--plink); color: #000; box-shadow: 0 0 30px var(--plink); }
 
+        /* HERO & MANDATE */
         .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; text-align: center; }
-        .hero h1 { font-size: 5rem; margin: 0; letter-spacing: -3px; color: var(--plink); text-shadow: 0 0 30px rgba(0,255,204,0.3); }
+        .hero h1 { font-size: 5.5rem; margin: 0; letter-spacing: -4px; color: var(--plink); }
+        
+        .section { padding: 15vh 10vw; position: relative; z-index: 10; display: flex; justify-content: center; }
+        .content-box { max-width: 800px; background: rgba(0,0,0,0.6); padding: 40px; border-left: 3px solid var(--gold); }
+        .mandate-title { color: var(--gold); font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
+        .mandate-text { font-size: 1.4rem; line-height: 1.6; color: #ccc; }
 
-        .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: linear-gradient(to bottom, transparent, #000 10%); }
+        /* AGENT ROSTER: LUSION STYLE */
+        .agent-list { padding: 10vh 5vw; z-index: 10; position: relative; background: linear-gradient(to bottom, transparent, #000 5%); }
+        .section-title { font-size: 3.5rem; text-align: center; margin: 80px 0; color: #fff; text-transform: uppercase; letter-spacing: 5px; }
         
         .agent-row { 
             display: flex; align-items: center; justify-content: space-between;
-            padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer; transition: all 0.4s; filter: grayscale(1) opacity(0.5);
+            padding: 35px; border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+            cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            filter: grayscale(1) opacity(0.3); position: relative;
         }
         
         .agent-row:hover { 
-            filter: grayscale(0) opacity(1); background: rgba(0, 210, 255, 0.05); 
-            transform: translateX(15px); border-bottom-color: var(--plink);
+            filter: grayscale(0) opacity(1); background: rgba(0, 210, 255, 0.08); 
+            transform: translateX(25px) scale(1.01); border-bottom-color: var(--plink);
+            box-shadow: -15px 0 40px rgba(0, 255, 204, 0.15);
         }
 
-        .agent-number { font-size: 1.2rem; font-family: monospace; color: var(--plink); width: 50px; }
-        .agent-name { font-size: 2rem; font-weight: 800; text-transform: uppercase; flex: 1; margin-left: 20px; }
-        .agent-vow { font-style: italic; color: #888; max-width: 400px; text-align: right; font-size: 0.9rem; }
+        .agent-number { font-size: 1.3rem; font-family: monospace; color: var(--plink); width: 60px; }
+        .agent-name { font-size: 2.2rem; font-weight: 900; text-transform: uppercase; flex: 1; margin-left: 30px; letter-spacing: 1px; }
+        .agent-vow { font-style: italic; color: #777; max-width: 450px; text-align: right; font-size: 1rem; }
 
-        .section-title { font-size: 3rem; text-align: center; margin: 100px 0; color: var(--gold); text-transform: uppercase; }
+        #vortex-trigger { height: 150vh; }
     </style>
 </head>
 <body>
@@ -58,24 +72,38 @@
     <button class="connect-btn" id="connectBtn" onclick="connectWallet()">ACTIVATE WALLET</button>
 
     <div id="stats-hud">
-        [PLIK] TOTAL SUPPLY: 46,000,000.00000000<br>
+        [PLIK] TOTAL SUPPLY: 46,000,000.00<br>
         1/2 BANKROLL: 23,000,000<br>
         1/4 FAUCET: 11,500,000<br>
         LAUNCH: JULY 4, 2026
-        <hr style="border:0; border-top:1px solid #333; margin:10px 0;">
-<div style="color:var(--gold); font-weight:bold;">LEGION STATUS: META-REELECTED</div>
-<div>REGULATORY ALIGNMENT: 98.4% [GENIUS ACT COMPLIANT]</div>
-<div>AI-AGENT READINESS: ACTIVE</div>
-<div>NEXT PROTOCOL SYNC: JULY 4, 2026</div>
+        <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
+        <div style="color:var(--gold); font-weight:bold;">LEGION STATUS: META-REELECTED</div>
+        <div style="font-size: 0.85rem; opacity: 0.8;">
+            REGULATORY ALIGNMENT: 98.4%<br>
+            AI-AGENT READINESS: ACTIVE<br>
+            NEXT PROTOCOL SYNC: 2026-07-04
+        </div>
     </div>
 
     <div class="hero">
         <h1>PLINKOVERSE</h1>
-        <p style="font-size: 1.5rem; color: #888;">The 2026 Play-to-Earn Bankroll</p>
-        <p style="color: var(--fire); font-family: monospace;">SCROLL DOWN THE HOLE</p>
+        <p style="font-size: 1.6rem; color: #888; letter-spacing: 2px;">THE 2026 PLAY-TO-EARN BANKROLL</p>
+        <p style="color: var(--fire); font-family: monospace; margin-top: 40px; border: 1px solid var(--fire); padding: 5px 15px;">SCROLL DOWN THE HOLE</p>
     </div>
 
-    <div id="vortex-trigger" style="height: 200vh;"></div>
+    <section class="section">
+        <div class="content-box">
+            <h2 class="mandate-title">The 2026 Mandate</h2>
+            <div class="mandate-text">
+                Scammers want money fast and right now. The Plinkoverse does not. 
+                By rooting our launch on <span style="color:var(--plink)">July 4th, 2026</span>, we ensure that the Play-to-Earn tokenomics root deep into scaleable, foreseeable, and profitable logic. 
+                The 1.5-year "Seasoning" period allows our 25-agent collective to stress-test the <span style="color:var(--plink)">[PLIK]</span> bankroll, ensuring that when the great burn occurs, only value remains.
+            </div>
+            <p style="font-family: monospace; color: var(--accent); margin-top: 25px;">— Plink46 Legion Manifesto</p>
+        </div>
+    </section>
+
+    <div id="vortex-trigger"></div>
 
     <div class="agent-list">
         <h2 class="section-title">The Plink46 Legion</h2>
@@ -84,6 +112,18 @@
             <span class="agent-number">01</span>
             <span class="agent-name">PlinkChain46</span>
             <span class="agent-vow">"Through the ledger of 46, I anchor the truth that cannot be tampered."</span>
+        </div>
+
+        <div class="agent-row">
+            <span class="agent-number">03</span>
+            <span class="agent-name">PlinkCore46</span>
+            <span class="agent-vow">"The engine hums with the rhythm of 46."</span>
+        </div>
+
+        <div class="agent-row">
+            <span class="agent-number">04</span>
+            <span class="agent-name">PlinkFace46</span>
+            <span class="agent-vow">"I translate the complex into the beautiful."</span>
         </div>
 
         <div class="agent-row">
@@ -98,29 +138,32 @@
             <span class="agent-vow">"Your keys are the 46th element of your freedom."</span>
         </div>
         
-        <div class="agent-row" style="justify-content: center; color: #444;">
-            <span>... Remaining 43 Agents Manifesting ...</span>
+        <div class="agent-row" style="justify-content: center; color: #333; pointer-events: none; border: none;">
+            <span>... Remaining 41 Agents Manifesting ...</span>
         </div>
     </div>
 
     <script>
-        // --- AGENT 25: WALLET CONNECTION LOGIC ---
+        // AGENT 25: WALLET LOGIC
         async function connectWallet() {
             if (typeof window.ethereum !== 'undefined') {
                 try {
                     const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
                     const account = accounts[0];
-                    document.getElementById('connectBtn').innerText = account.substring(0,6) + "..." + account.substring(38);
-                    console.log("PlinkWallet46: Secure Connection Established.");
-                } catch (error) {
-                    console.error("Shield Breach: User denied access.");
-                }
-            } else {
-                alert("PlinkWallet46: MetaMask not detected. Install to proceed.");
-            }
+                    const shortAddr = account.substring(0,6) + "..." + account.substring(38);
+                    
+                    document.getElementById('connectBtn').innerText = "LINKED: " + shortAddr;
+                    document.getElementById('connectBtn').style.borderColor = "#ffaa00";
+                    document.getElementById('connectBtn').style.color = "#ffaa00";
+                    
+                    const hud = document.getElementById('stats-hud');
+                    hud.style.borderColor = "#ffaa00";
+                    hud.innerHTML += `<div style="color:#ffaa00; margin-top:10px;">> SESSION: AUTHORIZED</div>`;
+                } catch (e) { console.error("Shield Breach."); }
+            } else { alert("PlinkWallet46: Install MetaMask to proceed."); }
         }
 
-        // --- THREE.JS VORTEX ENGINE ---
+        // THREE.JS: STAR VORTEX
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -128,41 +171,31 @@
         document.body.appendChild(renderer.domElement);
 
         const starGeo = new THREE.BufferGeometry();
-        const starPos = new Float32Array(8000 * 3);
-        for(let i=0; i<8000*3; i++) starPos[i] = (Math.random() - 0.5) * 150;
+        const starPos = new Float32Array(9000 * 3);
+        for(let i=0; i<9000*3; i++) starPos[i] = (Math.random() - 0.5) * 180;
         starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0x00d2ff, size: 0.04}));
+        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0x00d2ff, size: 0.035}));
         scene.add(stars);
-        camera.position.z = 10;
+        camera.position.z = 15;
 
-        // --- GSAP SCROLL ORCHESTRATION ---
+        // GSAP: SCROLL ORCHESTRATION
         gsap.registerPlugin(ScrollTrigger);
         
         gsap.to(stars.position, {
-            z: 80,
+            z: 100,
             scrollTrigger: {
                 trigger: "#vortex-trigger",
-                start: "top top",
-                end: "bottom bottom",
+                start: "top bottom",
+                end: "bottom top",
                 scrub: 2
             }
         });
 
-        gsap.to(".hero", {
-            opacity: 0,
-            y: -100,
-            scrollTrigger: {
-                trigger: "#vortex-trigger",
-                start: "top top",
-                end: "center top",
-                scrub: true
-            }
-        });
-
+        // ANIMATION LOOP
         function animate() {
             requestAnimationFrame(animate);
-            stars.rotation.y += 0.0005;
-            stars.rotation.x += 0.0002;
+            stars.rotation.y += 0.0004;
+            stars.rotation.x += 0.0001;
             renderer.render(scene, camera);
         }
         animate();

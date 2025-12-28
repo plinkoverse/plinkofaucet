@@ -1,8 +1,14 @@
-// AGENT 12: UNIVERSAL SINGULARITY ENGINE
+// SPAR PANA - SCRIPT.JS v3.9.1
 document.addEventListener('DOMContentLoaded', () => {
-    loadLegionData();
-    initThreeJS();
+    if (document.getElementById('agent-list-container')) loadLegionData();
+    syncTokenomics();
     initUniversalGravity();
+    if (typeof initThreeJS === "function") initThreeJS();
+    
+    // Resume streak if connected
+    if(localStorage.getItem('plink_loyalty')) {
+        startLoyaltyPulse();
+    }
 });
 
 async function loadLegionData() {
@@ -10,7 +16,8 @@ async function loadLegionData() {
         const response = await fetch('data/data.json');
         const data = await response.json();
         const container = document.getElementById('agent-list-container');
-        
+        if (!container) return;
+
         data.agents.forEach(agent => {
             const row = document.createElement('div');
             row.className = 'agent-row gravity-item';
@@ -21,50 +28,42 @@ async function loadLegionData() {
             `;
             container.appendChild(row);
         });
-    } catch (e) { console.error("Data Breach: Legion data unreachable."); }
+    } catch (e) { console.error("Legion Offline."); }
+}
+
+async function syncTokenomics() {
+    try {
+        const response = await fetch('data/ico.json');
+        const ico = await response.json();
+        const supplyEl = document.querySelector('.total-supply-display');
+        const fundingEl = document.querySelector('.funding-progress-text');
+
+        if(supplyEl) supplyEl.innerText = `[PLIK] TOTAL SUPPLY: ${Number(ico.total_supply).toLocaleString()}`;
+        if(fundingEl) fundingEl.innerText = `PHASE 1: $${ico.funding_goals.current_raised_usd} / $${ico.funding_goals.solidity_manifestation}`;
+    } catch (e) { console.warn("Sync Failed."); }
 }
 
 function initUniversalGravity() {
-    // This targets EVERY element with the 'gravity-item' class
     document.addEventListener('mousemove', (e) => {
         const items = document.querySelectorAll('.gravity-item');
-        
         items.forEach(item => {
             const rect = item.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            
-            const distX = e.clientX - centerX;
-            const distY = e.clientY - centerY;
-            const distance = Math.hypot(distX, distY);
+            const distance = Math.hypot(e.clientX - centerX, e.clientY - centerY);
 
             if (distance < 250) {
                 const pull = (250 - distance) / 250;
                 gsap.to(item, {
-                    x: distX * 0.3 * pull,
-                    y: distY * 0.3 * pull,
-                    skewX: 10 * pull,
+                    x: (e.clientX - centerX) * 0.3 * pull,
+                    y: (e.clientY - centerY) * 0.3 * pull,
                     scale: 1 + (0.1 * pull),
-                    color: "#ffaa00", // Turns gold as it approaches the "event horizon"
-                    duration: 0.4,
-                    ease: "power2.out"
+                    color: "#ffaa00",
+                    duration: 0.4
                 });
             } else {
-                gsap.to(item, { x: 0, y: 0, skewX: 0, scale: 1, color: "", duration: 0.8 });
+                gsap.to(item, { x: 0, y: 0, scale: 1, color: "", duration: 0.8 });
             }
         });
     });
-}async function syncTokenomics() {
-    try {
-        const response = await fetch('data/ico.json');
-        const ico = await response.json();
-        
-        // Update the HUD with real data from JSON
-        const supplyEl = document.querySelector('.total-supply-display');
-        if(supplyEl) supplyEl.innerText = `[PLIK] TOTAL SUPPLY: ${ico.total_supply.toLocaleString()}`;
-        
-        console.log("Legion Sync: Tokenomics Manifested.");
-    } catch (e) {
-        console.warn("Sync Failed: The ledger is currently in the shadow.");
-    }
 }

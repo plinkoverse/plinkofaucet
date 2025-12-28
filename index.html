@@ -257,7 +257,32 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        });// --- AGENT 33: STREAK & AIRDROP ENGINE ---
+        let loyaltyScore = 1.0;
+        let pendingPlik = 0.0;
+        let isConnected = false;
+
+        function startLoyaltyPulse() {
+            setInterval(() => {
+                if (isConnected) {
+                    // Increase loyalty by a fraction every second
+                    loyaltyScore += 0.00000014; 
+                    pendingPlik += 0.0046; // The "46" resonance logic
+
+                    document.getElementById('streak-counter').innerText = "x " + loyaltyScore.toFixed(8);
+                    document.getElementById('potential-yield').innerText = "PENDING [PLIK]: " + pendingPlik.toFixed(4);
+                    
+                    // Save to local storage so the streak persists on refresh
+                    localStorage.setItem('plink_loyalty', loyaltyScore);
+                }
+            }, 1000);
+        }
+
+        // Initialize from storage if it exists
+        if(localStorage.getItem('plink_loyalty')) {
+            loyaltyScore = parseFloat(localStorage.getItem('plink_loyalty'));
+            document.getElementById('streak-counter').innerText = "x " + loyaltyScore.toFixed(8);
+        }
     </script>
 </body>
 </html>

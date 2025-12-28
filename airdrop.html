@@ -1,52 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Plinko Airdrop</title>
-  <link rel="stylesheet" href="css/airdrop.css" />
+    <meta charset="UTF-8">
+    <title>AIRDROP | Plinkoverse</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/airdrop.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
-<body>
-  <div class="container">
-    <h1>🎰 Plinko Airdrop Portal</h1>
-    <p class="subtext">Claim your early investor airdrop — 1000 PKO per 1 TON or equivalent ETH</p>
+<body class="airdrop-hub">
 
-    <div id="airdrop-info">
-      <p><strong>Airdrop Round:</strong> <span id="round">Loading...</span></p>
-      <p><strong>Start:</strong> <span id="start">Loading...</span></p>
-      <p><strong>End:</strong> <span id="end">Loading...</span></p>
-      <p><strong>Total Tokens:</strong> <span id="total">Loading...</span></p>
+    <div id="stats-hud">
+        <a href="index.html" class="gravity-item" style="color:var(--plink); text-decoration:none;"><- CORE</a>
+        <div class="gravity-item" style="margin-top:10px;">RANK: <span id="user-rank">UNASSIGNED</span></div>
     </div>
 
-    <button id="connectBtn">🔗 CONNECT WALLET</button>
+    <div class="hero">
+        <h1 class="gravity-item">AIRDROP PHASE 0</h1>
+        <p class="gravity-item">Your loyalty score determines your slice of the 11.5M [PLIK].</p>
 
-    <div class="burn-info">
-      <h2>🔥 Early Investor Bonus</h2>
-      <p>Early supporters can claim <strong>1000 PKO</strong> for every <strong>1 TON</strong> or equivalent value in ETH via MetaMask.</p>
-      <table class="airdrop-table">
-        <thead>
-          <tr>
-            <th>Asset</th>
-            <th>Amount</th>
-            <th>PKO Reward</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>TON</td>
-            <td>1 TON</td>
-            <td>1000 PKO</td>
-          </tr>
-          <tr>
-            <td>ETH</td>
-            <td>Equivalent to 1 TON</td>
-            <td>1000 PKO</td>
-          </tr>
-        </tbody>
-      </table>
+        <div class="airdrop-card gravity-item">
+            <div id="rank-badge" class="badge-locked">?</div>
+            <div class="stats-grid">
+                <div><span>STREAK:</span> <b id="display-streak">0</b></div>
+                <div><span>TOTAL SAVED:</span> <b id="display-balance">0</b></div>
+            </div>
+            <button id="check-eligibility" class="claim-button">CALCULATE LOYALTY</button>
+        </div>
+
+        <div id="airdrop-status" class="gravity-item" style="margin-top: 30px; display: none;">
+            <p id="status-msg">Scanning the ledger...</p>
+        </div>
     </div>
-  </div>
 
-  <script src="js/airdrop.js"></script>
+    <script src="js/airdrop.js"></script>
 </body>
 </html>

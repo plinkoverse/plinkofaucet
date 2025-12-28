@@ -2,34 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PLINK [PLIK] FAUCET | Sparpana Protocol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXTRACTION | [PLIK] Faucet</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/airdrop.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body class="faucet-page">
 
+    <div id="deep-space-bg"></div>
+
     <div id="stats-hud">
-        <a href="index.html" class="gravity-item" style="color:var(--plink); text-decoration:none;"><- RETURN TO SINGULARITY</a>
-        <div class="gravity-item" style="margin-top:10px;">LOOT: <span id="user-balance">0.0000</span> [PLIK]</div>
+        <div class="gravity-item">RESERVE: <span id="user-balance">0.0000</span> [PLIK]</div>
+        <div style="display: flex; gap: 15px; margin-top: 15px; font-size: 0.7rem;">
+            <a href="index.html" class="gravity-item" style="color:var(--plink); text-decoration:none;">PORTAL</a>
+            <a href="faucet.html" class="gravity-item" style="color:var(--plink); text-decoration:none;">EXTRACTION</a>
+            <a href="airdrop.html" class="gravity-item" style="color:var(--plink); text-decoration:none;">AIRDROP</a>
+        </div>
     </div>
 
     <div class="hero">
         <h1 class="gravity-item">REPLENISH</h1>
-        <p class="gravity-item">The 24-hour cycle of the 46 Legion.</p>
+        <p class="gravity-item" style="color: #888;">24-Hour Extraction Cycle: +46.00 [PLIK]</p>
 
-        <div class="magnetic-wrap" id="claim-trigger">
+        <div class="magnetic-wrap" id="claim-trigger" style="margin-top: 30px;">
             <button id="claim-btn" class="claim-button">
                 <span class="btn-text">INITIALIZE EXTRACTION</span>
                 <div class="btn-glitch"></div>
             </button>
         </div>
         
-        <div id="cooldown-timer" class="gravity-item" style="margin-top:20px; opacity:0.5;">READY FOR UPLINK</div>
+        <div id="cooldown-timer" class="gravity-item" style="margin-top:20px; opacity:0.6; font-family:monospace;">READY FOR UPLINK</div>
+
+        <div style="display: flex; gap: 20px; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+            <a href="index.html" class="gravity-item nav-link">PORTAL</a>
+            <a href="faucet.html" class="gravity-item nav-link" style="color: var(--gold);">EXTRACTION</a>
+            <a href="airdrop.html" class="gravity-item nav-link">AIRDROP</a>
+        </div>
     </div>
 
     <audio id="claim-sound"><source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"></audio>
 
+    <script src="js/script.js"></script>
     <script src="js/faucet.js"></script>
 </body>
 </html>

@@ -1,22 +1,108 @@
-// SPAR PANA - SCRIPT.JS v3.9.1
+/** * SPAR PANA - PLINKOVERSE v4.0 
+ * Unified Gravity & Parallax Engine 
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('agent-list-container')) loadLegionData();
+    // 1. Initialize Sub-Systems
+    initLusionEngine();
     syncTokenomics();
-    initUniversalGravity();
-    if (typeof initThreeJS === "function") initThreeJS();
+    loadLegionData();
     
-    // Resume streak if connected
-    if(localStorage.getItem('plink_loyalty')) {
-        startLoyaltyPulse();
-    }
+    // 2. Three.js Background (if script exists)
+    if (typeof initThreeJS === "function") initThreeJS();
 });
 
+/**
+ * CORE ENGINE: Combines Background Parallax and Foreground Gravity
+ */
+function initLusionEngine() {
+    const bg = document.getElementById('deep-space-bg');
+    
+    document.addEventListener('mousemove', (e) => {
+        const { clientX, clientY } = e;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // A. BACKGROUND PARALLAX (Movement opposite to mouse)
+        if (bg) {
+            const moveX = (clientX - centerX) * 0.05; 
+            const moveY = (clientY - centerY) * 0.05;
+            
+            gsap.to(bg, {
+                x: moveX,
+                y: moveY,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+        }
+
+        // B. GRAVITY ITEMS (Attraction/Hover Effect)
+        const items = document.querySelectorAll('.gravity-item');
+        items.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            const elCenterX = rect.left + rect.width / 2;
+            const elCenterY = rect.top + rect.height / 2;
+            
+            const distX = clientX - elCenterX;
+            const distY = clientY - elCenterY;
+            const distance = Math.hypot(distX, distY);
+
+            if (distance < 300) {
+                const pull = (300 - distance) / 300;
+                gsap.to(item, {
+                    x: distX * 0.4 * pull,
+                    y: distY * 0.4 * pull,
+                    scale: 1 + (0.15 * pull),
+                    color: "#ffaa00", // Gold highlight
+                    textShadow: `0 0 ${25 * pull}px rgba(255, 170, 0, 0.5)`,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            } else {
+                gsap.to(item, { 
+                    x: 0, y: 0, scale: 1, 
+                    color: "", 
+                    textShadow: "0 0 0px transparent",
+                    duration: 0.8 
+                });
+            }
+        });
+    });
+}
+
+/**
+ * DATA LAYER: Pulls 2026 Tokenomics from ico.json
+ */
+async function syncTokenomics() {
+    try {
+        const response = await fetch('data/ico.json');
+        if (!response.ok) return;
+        const ico = await response.json();
+        
+        const supplyEl = document.querySelector('.total-supply-display');
+        const fundingEl = document.querySelector('.funding-progress-text');
+
+        if(supplyEl) {
+            supplyEl.innerText = `[PLIK] TOTAL SUPPLY: ${Number(ico.total_supply).toLocaleString()}`;
+        }
+        if(fundingEl) {
+            fundingEl.innerText = `PHASE 1 FUNDING: $${ico.funding_goals.current_raised_usd} / $${ico.funding_goals.solidity_manifestation}`;
+        }
+    } catch (err) {
+        console.warn("Audit: Tokenomic data in shadow.");
+    }
+}
+
+/**
+ * REGISTRY LAYER: Pulls Agents from data.json
+ */
 async function loadLegionData() {
     try {
-        const response = await fetch('data/data.json');
-        const data = await response.json();
         const container = document.getElementById('agent-list-container');
         if (!container) return;
+
+        const response = await fetch('data/data.json');
+        const data = await response.json();
 
         data.agents.forEach(agent => {
             const row = document.createElement('div');
@@ -28,64 +114,7 @@ async function loadLegionData() {
             `;
             container.appendChild(row);
         });
-    } catch (e) { console.error("Legion Offline."); }
-}
-
-async function syncTokenomics() {
-    try {
-        const response = await fetch('data/ico.json');
-        const ico = await response.json();
-        const supplyEl = document.querySelector('.total-supply-display');
-        const fundingEl = document.querySelector('.funding-progress-text');
-
-        if(supplyEl) supplyEl.innerText = `[PLIK] TOTAL SUPPLY: ${Number(ico.total_supply).toLocaleString()}`;
-        if(fundingEl) fundingEl.innerText = `PHASE 1: $${ico.funding_goals.current_raised_usd} / $${ico.funding_goals.solidity_manifestation}`;
-    } catch (e) { console.warn("Sync Failed."); }
-}
-
-function initLusionBackground() {
-    const bg = document.getElementById('deep-space-bg');
-    
-    document.addEventListener('mousemove', (e) => {
-        // Calculate mouse position as a percentage of the screen
-        const moveX = (e.clientX / window.innerWidth - 0.5) * 30; // 30px movement
-        const moveY = (e.clientY / window.innerHeight - 0.5) * 30;
-        
-        // Apply the parallax shift
-        gsap.to(bg, {
-            x: moveX,
-            y: moveY,
-            duration: 1,
-            ease: "power1.out"
-        });
-    });
-}
-
-// Call it in your DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-    initLusionBackground();
-    // ... rest of your code
-});
-    document.addEventListener('mousemove', (e) => {
-        const items = document.querySelectorAll('.gravity-item');
-        items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const distance = Math.hypot(e.clientX - centerX, e.clientY - centerY);
-
-            if (distance < 250) {
-                const pull = (250 - distance) / 250;
-                gsap.to(item, {
-                    x: (e.clientX - centerX) * 0.3 * pull,
-                    y: (e.clientY - centerY) * 0.3 * pull,
-                    scale: 1 + (0.1 * pull),
-                    color: "#ffaa00",
-                    duration: 0.4
-                });
-            } else {
-                gsap.to(item, { x: 0, y: 0, scale: 1, color: "", duration: 0.8 });
-            }
-        });
-    });
+    } catch (err) {
+        console.error("Audit: Legion registry unreachable.");
+    }
 }

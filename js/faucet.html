@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PLINK [PLIK] FAUCET | Sparpana Protocol</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/airdrop.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="faucet-page">
+
+    <div id="stats-hud">
+        <a href="index.html" class="gravity-item" style="color:var(--plink); text-decoration:none;"><- RETURN TO SINGULARITY</a>
+        <div class="gravity-item" style="margin-top:10px;">LOOT: <span id="user-balance">0.0000</span> [PLIK]</div>
+    </div>
+
+    <div class="hero">
+        <h1 class="gravity-item">REPLENISH</h1>
+        <p class="gravity-item">The 24-hour cycle of the 46 Legion.</p>
+
+        <div class="magnetic-wrap" id="claim-trigger">
+            <button id="claim-btn" class="claim-button">
+                <span class="btn-text">INITIALIZE EXTRACTION</span>
+                <div class="btn-glitch"></div>
+            </button>
+        </div>
+        
+        <div id="cooldown-timer" class="gravity-item" style="margin-top:20px; opacity:0.5;">READY FOR UPLINK</div>
+    </div>
+
+    <audio id="claim-sound"><source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"></audio>
+
+    <script src="js/faucet.js"></script>
+</body>
+</html>

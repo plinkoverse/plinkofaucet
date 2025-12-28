@@ -43,7 +43,29 @@ async function syncTokenomics() {
     } catch (e) { console.warn("Sync Failed."); }
 }
 
-function initUniversalGravity() {
+function initLusionBackground() {
+    const bg = document.getElementById('deep-space-bg');
+    
+    document.addEventListener('mousemove', (e) => {
+        // Calculate mouse position as a percentage of the screen
+        const moveX = (e.clientX / window.innerWidth - 0.5) * 30; // 30px movement
+        const moveY = (e.clientY / window.innerHeight - 0.5) * 30;
+        
+        // Apply the parallax shift
+        gsap.to(bg, {
+            x: moveX,
+            y: moveY,
+            duration: 1,
+            ease: "power1.out"
+        });
+    });
+}
+
+// Call it in your DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    initLusionBackground();
+    // ... rest of your code
+});
     document.addEventListener('mousemove', (e) => {
         const items = document.querySelectorAll('.gravity-item');
         items.forEach(item => {

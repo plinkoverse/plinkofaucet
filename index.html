@@ -2,28 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PLINKOVERSE | v3.5</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLINKOVERSE | [PLIK] Legion</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/airdrop.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
 </head>
 <body>
-    <audio id="ambient-hum" loop><source src="https://codesandbox.io/api/v1/sandboxes/88v8v/files/hum.mp3" type="audio/mpeg"></audio>
+
+    <audio id="ambient-hum" loop>
+        <source src="https://codesandbox.io/api/v1/sandboxes/88v8v/files/hum.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">ACTIVATE WALLET</button>
 
     <div id="stats-hud">
-        [PLIK] BANKROLL: 46M
-        <div id="streak-counter">x 1.0000</div>
-        <button class="share-btn" onclick="shareStreak()">SHARE MULTIPLIER</button>
+        <div class="gravity-item">[PLIK] TOTAL SUPPLY: 46,000,000.00</div>
+        <div class="gravity-item">LAUNCH: JULY 4, 2026</div>
+        <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
+        
+        <div id="airdrop-logic">
+            <div style="font-size: 0.7rem; color: #888;">GENESIS LOYALTY MULTIPLIER</div>
+            <div id="streak-counter" class="gravity-item" style="color: var(--plink); font-size: 1.1rem;">x 1.00000000</div>
+            <button class="share-btn" onclick="shareStreak()" style="margin-top:10px; display:block; width:100%;">SHARE STREAK</button>
+        </div>
     </div>
 
     <div class="hero">
-        <h1 class="gravity-item">PLINKOVERSE</h1>
-        <p class="gravity-item">THE 2026 PLAY-TO-EARN BANKROLL</p>
+        <h1 id="plink-title" class="gravity-item">PLINKOVERSE</h1>
+        <p class="gravity-item" style="font-size: 1.2rem; color: #888; letter-spacing: 2px;">THE 2026 PLAY-TO-EARN BANKROLL</p>
+        <div class="scroll-indicator gravity-item">SCROLL DOWN THE HOLE</div>
     </div>
 
-    <div id="agent-list-container">
+    <div id="agent-list-container" class="agent-list">
+        <h2 class="section-title gravity-item">The Plink46 Legion</h2>
         </div>
 
-    <script src="script.js"></script>
+    <script src="js/web3.js"></script>
+    <script src="js/auth-logic.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

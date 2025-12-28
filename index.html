@@ -16,12 +16,25 @@
         
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         
-        #stats-hud {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            font-family: monospace; color: var(--plink); background: rgba(0,0,0,0.85);
-            padding: 20px; border: 1px solid var(--plink); line-height: 1.6;
-            pointer-events: none; transition: all 0.5s;
-        }
+        <div id="stats-hud">
+        [PLIK] TOTAL SUPPLY: 46,000,000.00<br>
+        1/2 BANKROLL: 23,000,000<br>
+        1/4 FAUCET: 11,500,000<br>
+        LAUNCH: JULY 4, 2026
+        <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
+        <div style="color:var(--gold); font-weight:bold; text-shadow: 0 0 8px var(--gold);">LEGION STATUS: META-REELECTED</div>
+        
+        <div id="airdrop-logic" style="margin-top: 10px; border: 1px solid #222; padding: 10px; background: rgba(0,0,0,0.5);">
+            <div style="font-size: 0.7rem; color: #888;">GENESIS LOYALTY MULTIPLIER</div>
+            <div id="streak-counter" style="color: var(--plink); font-size: 1.1rem;">x 1.00000000</div>
+            <div id="potential-yield" style="font-size: 0.7rem; color: var(--fire);">PENDING [PLIK]: 0.0000</div>
+        </div>
+
+        <div style="font-size: 0.75rem; opacity: 0.6; margin-top: 10px;">
+            REGULATORY ALIGNMENT: 98.4%<br>
+            AI-AGENT READINESS: ACTIVE
+        </div>
+    </div>
 
         .connect-btn {
             position: fixed; top: 20px; right: 20px; z-index: 101;

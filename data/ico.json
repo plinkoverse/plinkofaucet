@@ -1,1 +1,37 @@
-
+{
+  "project": "Plinkoverse",
+  "symbol": "PLIK",
+  "total_supply": 46000000,
+  "launch_date": "2026-07-04",
+  "funding_goals": {
+    "solidity_manifestation": 1000,
+    "liquidity_seed": 5000,
+    "current_raised_usd": 150
+  },
+  "allocations": [
+    {
+      "pool": "Faucet Rewards",
+      "percentage": 25,
+      "amount": 11500000,
+      "status": "Active"
+    },
+    {
+      "pool": "Liquidity Seed",
+      "percentage": 1.5,
+      "amount": 690000,
+      "status": "Locked"
+    },
+    {
+      "pool": "Community Airdrop",
+      "percentage": 10,
+      "amount": 4600000,
+      "status": "Manifesting"
+    },
+    {
+      "pool": "Legion Reserve",
+      "percentage": 63.5,
+      "amount": 29210000,
+      "status": "Vaulted"
+    }
+  ]
+}

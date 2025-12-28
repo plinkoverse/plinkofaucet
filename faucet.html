@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Plinko Faucet</title>
-  <link rel="stylesheet" href="css/faucet.css" />
+    <meta charset="UTF-8">
+    <title>PLINK [PLIK] FAUCET | Sparpana Protocol</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/airdrop.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
-<body>
-  <div class="container">
-    <h1>🕹️ Plinko Token Faucet</h1>
-    <p class="subtext">Claim your free PKO tokens every 24 hours. Secure with 2FA.</p>
+<body class="faucet-page">
 
-    <button id="connectWallet">🔗 CONNECT WALLET</button>
+    <div id="stats-hud">
+        <a href="index.html" class="gravity-item" style="color:var(--plink); text-decoration:none;"><- RETURN TO SINGULARITY</a>
+        <div class="gravity-item" style="margin-top:10px;">LOOT: <span id="user-balance">0.0000</span> [PLIK]</div>
+    </div>
 
-    <form id="claimForm" style="display:none;">
-      <label for="totp">Enter 2FA Code:</label>
-      <input type="text" id="totp" name="totp" maxlength="6" required />
-      <button type="submit">💧 Claim Faucet</button>
-    </form>
+    <div class="hero">
+        <h1 class="gravity-item">REPLENISH</h1>
+        <p class="gravity-item">The 24-hour cycle of the 46 Legion.</p>
 
-    <p id="statusMessage"></p>
-  </div>
+        <div class="magnetic-wrap" id="claim-trigger">
+            <button id="claim-btn" class="claim-button">
+                <span class="btn-text">INITIALIZE EXTRACTION</span>
+                <div class="btn-glitch"></div>
+            </button>
+        </div>
+        
+        <div id="cooldown-timer" class="gravity-item" style="margin-top:20px; opacity:0.5;">READY FOR UPLINK</div>
+    </div>
 
-  <script src="js/faucet.js"></script>
+    <audio id="claim-sound"><source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"></audio>
+
+    <script src="js/faucet.js"></script>
 </body>
 </html>

@@ -3,49 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIRDROP | [PLIK] Eligibility</title>
+    <title>AIRDROP | Eligibility</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/airdrop.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
 </head>
-<body class="airdrop-hub">
-
+<body>
     <div id="deep-space-bg"></div>
 
-    <div id="stats-hud">
-        <div class="gravity-item">RANK: <span id="user-rank" style="color:var(--gold)">UNASSIGNED</span></div>
-        <div style="display: flex; gap: 15px; margin-top: 15px; font-size: 0.7rem;">
-            <a href="index.html" class="gravity-item" style="color:var(--plink); text-decoration:none;">PORTAL</a>
-            <a href="faucet.html" class="gravity-item" style="color:var(--plink); text-decoration:none;">EXTRACTION</a>
-            <a href="airdrop.html" class="gravity-item" style="color:var(--plink); text-decoration:none;">AIRDROP</a>
+    <div id="scroll-wrapper">
+        <div id="stats-hud" class="glass-panel">
+            <div class="gravity-item">RESERVE: <span id="display-balance">0.0000</span> [PLIK]</div>
+            <nav style="margin-top: 10px;">
+                <a href="index.html" class="nav-link">PORTAL</a> | 
+                <a href="faucet.html" class="nav-link">EXTRACTION</a> | 
+                <a href="airdrop.html" class="nav-link" style="color:var(--gold)">AIRDROP</a>
+            </nav>
         </div>
-    </div>
 
-    <div class="hero">
-        <h1 class="gravity-item">PHASE 0 AIRDROP</h1>
-        <p class="gravity-item" style="color: #888; max-width: 500px;">Eligibility is calculated based on your Extraction Streak and Session Loyalty.</p>
-
-        <div class="airdrop-card gravity-item" style="margin-top: 30px;">
-            <div id="rank-badge" class="badge-locked">?</div>
-            <div class="stats-grid">
-                <div><span>STREAK:</span> <b id="display-streak" style="color:var(--plink)">0</b></div>
-                <div><span>TOTAL:</span> <b id="display-balance" style="color:var(--plink)">0</b></div>
+        <div class="container">
+            <div class="phase-block glass-panel">
+                <div class="agent-id">LOYALTY SCANNER</div>
+                <h2>Airdrop Eligibility</h2>
+                <p class="fling-text">Your 2026 allocation is calculated based on your total reserve and game performance.</p>
+                <div style="background: rgba(255,170,0,0.1); padding: 20px; border-left: 4px solid var(--gold); margin-top: 20px;">
+                    <strong>CURRENT RANK:</strong> <span id="rank">UNASSIGNED</span>
+                </div>
             </div>
-            <button id="check-eligibility" class="claim-button" style="width: 100%;">CALCULATE LOYALTY</button>
-        </div>
-
-        <div id="airdrop-status" class="gravity-item" style="margin-top: 30px; display: none;">
-            <p id="status-msg" style="font-family: monospace; font-size: 0.9rem;">SCANNING LEDGER...</p>
-        </div>
-
-        <div style="display: flex; gap: 20px; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-            <a href="index.html" class="gravity-item nav-link">PORTAL</a>
-            <a href="faucet.html" class="gravity-item nav-link">EXTRACTION</a>
-            <a href="airdrop.html" class="gravity-item nav-link" style="color: var(--gold);">AIRDROP</a>
         </div>
     </div>
 
     <script src="js/script.js"></script>
-    <script src="js/airdrop.js"></script>
+    <script>
+        // Read the balance from memory to show it here too
+        const balance = localStorage.getItem('plik_balance') || "0.0000";
+        document.getElementById('display-balance').innerText = parseFloat(balance).toFixed(4);
+    </script>
 </body>
 </html>

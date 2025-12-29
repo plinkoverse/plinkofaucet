@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLINKOVERSE | [PLIK] Legion Portal</title>
+    <title>PLINKOVERSE | Genesis Portal</title>
     
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-
     <link rel="stylesheet" href="css/style.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -16,34 +14,30 @@
 
     <div id="deep-space-bg"></div>
 
-    <audio id="ambient-hum" loop>
-        <source src="assets/hum.mp3" type="audio/mpeg">
-    </audio>
-
-    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">ACTIVATE WALLET</button>
-
-    <div id="stats-hud">
-        <div class="total-supply-display gravity-item">SCANNING SUPPLY...</div>
-        <div class="gravity-item" style="font-size: 0.7rem; opacity: 0.6;">JULY 4, 2026 MANIFESTATION</div>
-        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin:12px 0;">
-        <div class="funding-progress-text gravity-item" style="color:var(--gold); font-size:0.8rem;">SYNCING LEDGER...</div>
-        <div id="streak-counter" class="gravity-item" style="color: var(--plink); font-size: 1rem; margin-top:10px;">x 1.00000000</div>
-    </div>
-
-    <div class="hero">
-        <h1 id="plink-title" class="gravity-item">PLINKOVERSE</h1>
-        <p class="gravity-item" style="color: #888; letter-spacing: 3px; font-weight: 300;">THE 2026 PLAY-TO-EARN BANKROLL</p>
+    <div id="scroll-wrapper">
         
-        <div style="margin-top: 40px; display: flex; gap: 20px;" class="gravity-item">
-            <a href="faucet.html" class="nav-link">EXTRACTION</a>
-            <a href="airdrop.html" class="nav-link">AIRDROP</a>
+        <div id="stats-hud" class="glass-panel">
+            <div class="gravity-item">RESERVE: <span id="user-balance">0.0000</span> [PLIK]</div>
+            <nav style="margin-top: 10px;">
+                <a href="index.html" class="nav-link">PORTAL</a> | 
+                <a href="faucet.html" class="nav-link">EXTRACTION</a> | 
+                <a href="airdrop.html" class="nav-link">AIRDROP</a>
+            </nav>
+        </div>
+
+        <div class="container">
+            <div class="phase-block glass-panel">
+                <div class="agent-id">AGENT GROUP ALPHA</div>
+                <h2>Phase 1: Genesis</h2>
+                <div class="fling-text">The Plinkoverse begins with the deployment of the Smart Faucet. Move your mouse over this text to see the 'Fling' effect.</div>
+            </div>
+        </div>
+
+        <div id="game-section">
+            <iframe src="https://plinko-web-game.netlify.app/" title="Plinko Faucet Reality"></iframe>
         </div>
     </div>
 
-    <div id="agent-list-container">
-        </div>
-
-    <script src="js/web3.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

@@ -1,120 +1,85 @@
-/** * SPAR PANA - PLINKOVERSE v4.0 
- * Unified Gravity & Parallax Engine 
- */
-
+// This runs as soon as the page is finished loading
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Sub-Systems
-    initLusionEngine();
-    syncTokenomics();
-    loadLegionData();
-    
-    // 2. Three.js Background (if script exists)
-    if (typeof initThreeJS === "function") initThreeJS();
+    initThreeJS();      // Start the stars
+    initTextFling();    // Start the text animation
+    initParallax();     // Start the background drift
 });
 
-/**
- * CORE ENGINE: Combines Background Parallax and Foreground Gravity
- */
-function initLusionEngine() {
+let mouseX = 0, mouseY = 0;
+
+// --- 1. THE STARFIELD ENGINE ---
+function initThreeJS() {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    
+    // We make the star-layer transparent so we can see the image behind it
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Create 4,000 stars
+    const starCount = 4000;
+    const starPos = new Float32Array(starCount * 3);
+    for(let i=0; i < starCount * 3; i++) {
+        starPos[i] = (Math.random() - 0.5) * 100;
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
+    
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+    camera.position.z = 10;
+
+    // The loop that makes stars move
+    function animate() {
+        requestAnimationFrame(animate);
+        stars.rotation.y += 0.0003; // Slow spin
+        // Make stars lean toward the mouse
+        stars.position.x += (mouseX * 4 - stars.position.x) * 0.02;
+        stars.position.y += (-mouseY * 4 - stars.position.y) * 0.02;
+        renderer.render(scene, camera);
+    }
+    animate();
+}
+
+// --- 2. THE INTERACTION ENGINE ---
+function initParallax() {
     const bg = document.getElementById('deep-space-bg');
     
     document.addEventListener('mousemove', (e) => {
-        const { clientX, clientY } = e;
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
+        // Track mouse position
+        mouseX = (e.clientX / window.innerWidth - 0.5);
+        mouseY = (e.clientY / window.innerHeight - 0.5);
 
-        // A. BACKGROUND PARALLAX (Movement opposite to mouse)
-        if (bg) {
-            const moveX = (clientX - centerX) * 0.05; 
-            const moveY = (clientY - centerY) * 0.05;
-            
-            gsap.to(bg, {
-                x: moveX,
-                y: moveY,
-                duration: 1.2,
-                ease: "power2.out"
-            });
-        }
-
-        // B. GRAVITY ITEMS (Attraction/Hover Effect)
-        const items = document.querySelectorAll('.gravity-item');
-        items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            const elCenterX = rect.left + rect.width / 2;
-            const elCenterY = rect.top + rect.height / 2;
-            
-            const distX = clientX - elCenterX;
-            const distY = clientY - elCenterY;
-            const distance = Math.hypot(distX, distY);
-
-            if (distance < 300) {
-                const pull = (300 - distance) / 300;
-                gsap.to(item, {
-                    x: distX * 0.4 * pull,
-                    y: distY * 0.4 * pull,
-                    scale: 1 + (0.15 * pull),
-                    color: "#ffaa00", // Gold highlight
-                    textShadow: `0 0 ${25 * pull}px rgba(255, 170, 0, 0.5)`,
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
-            } else {
-                gsap.to(item, { 
-                    x: 0, y: 0, scale: 1, 
-                    color: "", 
-                    textShadow: "0 0 0px transparent",
-                    duration: 0.8 
-                });
-            }
-        });
+        // Move the faded background image slightly (Parallax)
+        gsap.to(bg, { x: mouseX * -30, y: mouseY * -30, duration: 1 });
     });
 }
 
-/**
- * DATA LAYER: Pulls 2026 Tokenomics from ico.json
- */
-async function syncTokenomics() {
-    try {
-        const response = await fetch('data/ico.json');
-        if (!response.ok) return;
-        const ico = await response.json();
-        
-        const supplyEl = document.querySelector('.total-supply-display');
-        const fundingEl = document.querySelector('.funding-progress-text');
+// --- 3. THE TEXT FLING ENGINE ---
+function initTextFling() {
+    // This breaks every letter into its own piece so we can move them
+    document.querySelectorAll('.fling-text').forEach(p => {
+        p.innerHTML = p.innerText.split('').map(char => 
+            char === ' ' ? ' ' : `<span class="char">${char}</span>`
+        ).join('');
+    });
 
-        if(supplyEl) {
-            supplyEl.innerText = `[PLIK] TOTAL SUPPLY: ${Number(ico.total_supply).toLocaleString()}`;
-        }
-        if(fundingEl) {
-            fundingEl.innerText = `PHASE 1 FUNDING: $${ico.funding_goals.current_raised_usd} / $${ico.funding_goals.solidity_manifestation}`;
-        }
-    } catch (err) {
-        console.warn("Audit: Tokenomic data in shadow.");
-    }
-}
-
-/**
- * REGISTRY LAYER: Pulls Agents from data.json
- */
-async function loadLegionData() {
-    try {
-        const container = document.getElementById('agent-list-container');
-        if (!container) return;
-
-        const response = await fetch('data/data.json');
-        const data = await response.json();
-
-        data.agents.forEach(agent => {
-            const row = document.createElement('div');
-            row.className = 'agent-row gravity-item';
-            row.innerHTML = `
-                <span class="agent-number">${agent.id}</span>
-                <span class="agent-name">${agent.name}</span>
-                <span class="agent-vow">${agent.vow}</span>
-            `;
-            container.appendChild(row);
+    document.addEventListener('mousemove', (e) => {
+        document.querySelectorAll('.char').forEach(char => {
+            const rect = char.getBoundingClientRect();
+            // Calculate distance between mouse and the letter
+            const dist = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
+            
+            if (dist < 60) {
+                // If mouse is close, fling the letter away
+                const angle = Math.atan2(e.clientY - (rect.top + rect.height/2), e.clientX - (rect.left + rect.width/2));
+                gsap.to(char, { x: Math.cos(angle)*-40, y: Math.sin(angle)*-40, rotation: Math.random()*20-10, duration: 0.2 });
+            } else {
+                // Return letter to original spot
+                gsap.to(char, { x: 0, y: 0, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.3)" });
+            }
         });
-    } catch (err) {
-        console.error("Audit: Legion registry unreachable.");
-    }
+    });
 }

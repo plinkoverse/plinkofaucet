@@ -34,6 +34,15 @@ if (claimBtn) {
         currentBal += 46.00;
         streak += 1;
 
+        // BANKROLL UPDATE (Simulated Global State)
+        let bankroll = parseFloat(localStorage.getItem('plink_bankroll'));
+        if (isNaN(bankroll)) bankroll = 23000000.00; // Init if missing
+        
+        // "Claim reflects in remaining supply"
+        // Subtract claim from bankroll/supply
+        bankroll -= 46.00;
+        localStorage.setItem('plink_bankroll', bankroll.toFixed(4));
+        
         // GENERATE UNIQUE RECEIPT HASH (The "Vapor-Token" Proof)
         const receiptHash = generateReceipt(streak);
 

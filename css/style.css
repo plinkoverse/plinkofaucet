@@ -1,64 +1,61 @@
-/* Variables: These are colors we use throughout the site */
-:root { 
-    --accent: #00d2ff; 
-    --gold: #ffaa00; 
-    --glass: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+/* CSS: THE VISUAL DNA */
+:root {
+    --accent: #00d2ff; /* Plink Blue */
+    --gold: #ffaa00;   /* Warning Gold */
+    --glass: rgba(0, 0, 0, 0.6); /* Transparent Black */
 }
 
-body { 
-    margin: 0; 
-    background: #000; /* Pure black background */
-    color: #fff; 
-    font-family: sans-serif; 
-    overflow-x: hidden; 
+body {
+    margin: 0;
+    background: #000; /* Base Layer */
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
 }
 
-/* 🌌 THE FADED BACKGROUND */
+/* 🌌 LAYER 1: FADED BACKGROUND IMAGE (70% FADE) */
 #deep-space-bg {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    z-index: -3; /* Placed at the very bottom */
+    z-index: -3; 
 }
-
 #deep-space-bg::before {
     content: "";
     position: absolute;
     top: -5%; left: -5%;
     width: 110%; height: 110%;
-    /* This looks for your image in the assets folder */
     background: url('../assets/bg-singularity.webp') no-repeat center center;
     background-size: cover;
-    opacity: 0.3; /* 0.3 opacity = 70% FADED/DARKER */
+    opacity: 0.3; /* 0.3 means 70% dark/faded */
     z-index: -1;
 }
 
-/* The Three.js Star Canvas */
-canvas { 
-    position: fixed; 
-    top: 0; left: 0; 
-    z-index: -2; /* Sits between the image and the text */
+/* 🌌 LAYER 2: THE STAR CANVAS (Between Image and Text) */
+canvas {
+    position: fixed;
+    top: 0; left: 0;
+    z-index: -2;
+    pointer-events: none;
 }
 
-/* Glass Effect for Content Boxes */
+/* 🌌 LAYER 3: GLASS UI PANELS */
 .glass-panel {
     background: var(--glass);
-    backdrop-filter: blur(15px); /* This blurs the stars behind the box */
+    backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
-    padding: 40px;
-    margin-bottom: 50px;
+    padding: 30px;
 }
 
+/* HUD & NAVIGATION */
+#stats-hud {
+    position: fixed;
+    top: 20px; left: 20px;
+    z-index: 100;
+}
+.nav-link { color: var(--accent); text-decoration: none; margin-right: 15px; font-weight: bold; }
+
 .container { max-width: 800px; margin: 0 auto; padding: 100px 20px; position: relative; z-index: 10; }
-h2 { font-size: 3rem; color: var(--accent); margin-top: 0; }
 .fling-text { font-size: 1.2rem; line-height: 1.6; }
-.char { display: inline-block; will-change: transform; } /* Used for the text fling animation */
-
-/* HUD Styling */
-#stats-hud { position: fixed; top: 20px; left: 20px; z-index: 100; padding: 15px; }
-.nav-link { color: var(--accent); text-decoration: none; font-size: 0.8rem; }
-
-/* Game Section */
-#game-section { width: 100%; height: 100vh; margin-top: 10vh; border-top: 2px solid var(--accent); }
-iframe { width: 100%; height: 100%; border: none; }
+.char { display: inline-block; will-change: transform; }

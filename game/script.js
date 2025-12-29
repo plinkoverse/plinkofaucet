@@ -69,16 +69,25 @@ function initBoard() {
     pegs = [];
     buckets = [];
     
+    // Calculate sizing to fit screen vertically and horizontally
     const padding = 20;
-    const availableWidth = width - (padding * 2);
-    const spacing = availableWidth / ROWS; // Space between pegs
+    const startY = 80;
+    const bucketsHeight = 50;
     
-    // Create Pegs (Pyramid)
-    // Actually standard plinko is rectangular grid with offset, or pyramid.
-    // Pyramid: Row 3 has 3 pegs, Row 4 has 4...
-    // Let's do pyramid for classic look.
+    // Max available height for the board content
+    const availableH = height - startY - bucketsHeight - padding;
+    // Spacing based on height (ROWS + 1 spaces needed roughly)
+    const spacingH = availableH / (ROWS + 2);
     
-    const startY = 100;
+    // Spacing based on width
+    const availableW = width - (padding * 2);
+    const spacingW = availableW / (ROWS + 1); // Approximate width needs
+    
+    // Use the smaller spacing to ensure fit
+    const spacing = Math.min(spacingH, spacingW);
+    
+    // Recalculate startY to center vertically if we have extra space? 
+    // Or just stick to top
     
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c <= r; c++) {
@@ -89,49 +98,16 @@ function initBoard() {
         }
     }
     
-    // Create Buckets at bottom
-    // The last row (ROWS-1) has ROWS pegs.
-    // The balls fall BETWEEN these pegs (and outside).
-    // So we have ROWS + 1 zones.
-    // Wait, Pyramid: Row 0 = 1 peg. Row 1 = 2 pegs. ... Row 11 = 12 pegs.
-    // Balls fall to the sides of pegs. 
-    // At bottom of Row 11, there are 12 pegs, creating 13 gaps?
-    // Let's visualize: 
-    //   *
-    //  * *
-    // * * *
-    // Gap count = Row Index + 1 ? No.
-    // If Row 0 (1 peg), ball goes Left or Right (2 outcomes).
-    // Row 1 (2 pegs), ball can end up in 3 spots?
-    // Yes. So for ROWS=12 (0-11), final row has 12 pegs.
-    // Outcomes = 13.
-    // My MULTIPLIERS list has 13 items. Correct.
-    
     const finalRowY = startY + ((ROWS - 1) * spacing);
     const bucketY = finalRowY + spacing; // Where buckets are
-    
-    // Buckets are zones.
-    // X coords for buckets correspond to the gaps of the last row.
-    // Last row X start: (width/2) - ((11 * spacing)/2)
-    // First bucket center is to the left of first peg?
-    // Let's just define bucket zones based on x coordinates.
     
     const lastRowWidth = (ROWS - 1) * spacing;
     const startX = (width / 2) - (lastRowWidth / 2); // Center of first peg of last row
     
-    // We need 13 buckets. 
-    // 1st bucket is Left of first peg.
-    // 2nd bucket is Between 1st and 2nd peg.
-    // ...
-    // 13th bucket is Right of last peg.
-    
     for(let i=0; i < ROWS + 1; i++) {
-        // Center of bucket i
-        // First peg is at startX.
-        // Bucket 0 center should be startX - (spacing/2).
         const cx = startX - (spacing/2) + (i * spacing);
         const cy = bucketY;
-        const w = spacing - 4;
+        const w = spacing - 2;
         const h = 40;
         
         buckets.push({
@@ -149,25 +125,55 @@ function getBucketColor(mult) {
     return '#333'; // Loss
 }
 
+let particles = [];
+
 // Game Loop
 function loop() {
     ctx.clearRect(0, 0, width, height);
     
+    // Draw Particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life--;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.02;
+        
+        if (p.life <= 0 || p.alpha <= 0) {
+            particles.splice(i, 1);
+            continue;
+        }
+        
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+    }
+
     // Draw Pegs
     ctx.fillStyle = '#fff';
     pegs.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, PEG_RADIUS, 0, Math.PI*2);
         ctx.fill();
+        // Glow
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = "#00d2ff";
+        ctx.fill();
+        ctx.shadowBlur = 0;
     });
     
     // Draw Buckets
     buckets.forEach(b => {
         ctx.fillStyle = b.color;
-        ctx.fillRect(b.x - b.w/2, b.y, b.w, b.h);
+        // Rounded rect for style
+        // ctx.fillRect(b.x - b.w/2, b.y, b.w, b.h);
+        roundRect(ctx, b.x - b.w/2, b.y, b.w, b.h, 5, true, false);
         
         ctx.fillStyle = '#000';
-        ctx.font = '10px Arial';
+        ctx.font = 'bold 11px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(b.val + 'x', b.x, b.y + 25);
     });
@@ -189,24 +195,19 @@ function loop() {
             
             if (dist < BALL_RADIUS + PEG_RADIUS) {
                 // Bounce
-                // Simple deflection: normalized vector
                 const nx = dx / dist;
                 const ny = dy / dist;
-                
-                // Reflect velocity? 
-                // Simplified: Add horizontal push based on impact x
-                // And dampen Y
-                
-                // Add some randomness (The "Chaos" of Plinko)
                 const jitter = (Math.random() - 0.5) * 2;
                 
                 b.vx += nx * 2 + jitter;
                 b.vy *= -BOUNCE;
                 
-                // Push out to prevent sticking
                 const overlap = (BALL_RADIUS + PEG_RADIUS) - dist;
                 b.x += nx * overlap;
                 b.y += ny * overlap;
+                
+                // Spawn particles on hit
+                spawnParticles(p.x, p.y, 3, '#fff');
             }
         });
         
@@ -214,27 +215,60 @@ function loop() {
         ctx.beginPath();
         ctx.arc(b.x, b.y, BALL_RADIUS, 0, Math.PI*2);
         ctx.fillStyle = '#00d2ff';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00d2ff';
         ctx.fill();
+        ctx.shadowBlur = 0;
         ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1;
         ctx.stroke();
         
-        // Bucket Collision (Check if reached bottom)
-        // Check Y threshold
+        // Bucket Collision
         if (b.y > buckets[0].y) {
-            // Find which bucket
             const landedBucket = buckets.find(bucket => Math.abs(b.x - bucket.x) < bucket.w/2 + 5);
             
             if (landedBucket) {
                 resolveBall(b, landedBucket);
                 balls.splice(i, 1);
-            } else if (b.y > height) {
-                 // Missed everything (shouldn't happen with correct bounds)
+                // Big splash
+                spawnParticles(b.x, b.y, 20, landedBucket.color);
+            } else if (b.y > height + 50) {
                  balls.splice(i, 1);
             }
         }
     }
     
     requestAnimationFrame(loop);
+}
+
+function spawnParticles(x, y, count, color) {
+    for(let i=0; i<count; i++) {
+        particles.push({
+            x: x, y: y,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4,
+            life: 30 + Math.random() * 20,
+            alpha: 1.0,
+            color: color,
+            radius: Math.random() * 2 + 1
+        });
+    }
+}
+
+function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
 }
 
 function dropBall() {

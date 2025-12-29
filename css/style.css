@@ -46,6 +46,12 @@ canvas {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     padding: 30px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
 }
 
 /* HUD & NAVIGATION */
@@ -54,8 +60,87 @@ canvas {
     top: 20px; left: 20px;
     z-index: 100;
 }
-.nav-link { color: var(--accent); text-decoration: none; margin-right: 15px; font-weight: bold; }
+.nav-link { color: var(--accent); text-decoration: none; margin-right: 15px; font-weight: bold; transition: color 0.3s; }
+.nav-link:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
 
 .container { max-width: 800px; margin: 0 auto; padding: 100px 20px; position: relative; z-index: 10; }
 .fling-text { font-size: 1.2rem; line-height: 1.6; }
 .char { display: inline-block; will-change: transform; }
+
+/* 🕳️ THE AGENT TUNNEL */
+#agents-tunnel {
+    margin-top: 100px;
+    perspective: 1000px;
+}
+
+.agent-card {
+    background: rgba(0, 20, 40, 0.8);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 50px 0;
+    opacity: 0; /* Hidden initially for animation */
+    transform: translateY(100px) scale(0.8);
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.agent-card:hover::before {
+    left: 100%;
+}
+
+.agent-card:hover {
+    transform: scale(1.05) !important; /* Override scroll transform on hover */
+    box-shadow: 0 0 30px var(--accent);
+    background: rgba(0, 40, 80, 0.9);
+    z-index: 10;
+}
+
+.agent-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    right: 20px;
+    top: 0px;
+    pointer-events: none;
+}
+
+.agent-info h3 {
+    margin: 0;
+    color: var(--accent);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.agent-role {
+    color: var(--gold);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.agent-vow {
+    font-style: italic;
+    color: #ddd;
+    font-size: 0.95rem;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }

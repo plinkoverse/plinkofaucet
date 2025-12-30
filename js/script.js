@@ -4,6 +4,55 @@ document.addEventListener('DOMContentLoaded', () => {
     initFling();
     syncBalance();
     initAgents();
+    // 5. GLOBAL ACTIVITY FEED (MOCK)
+    function initGlobalFeed() {
+        const feedContainer = document.createElement('div');
+        feedContainer.id = 'global-feed';
+        feedContainer.style = `
+            position: fixed; bottom: 10px; left: 10px; 
+            background: rgba(0,0,0,0.8); border: 1px solid var(--accent);
+            padding: 10px; border-radius: 5px; font-size: 0.8rem;
+            color: #fff; z-index: 999; width: 300px; overflow: hidden;
+            pointer-events: none;
+        `;
+        document.body.appendChild(feedContainer);
+
+        const events = [
+            "New Investment: 0.5 BTC from Wallet...3x9a",
+            "Whale Alert: 10,000 PLIK Burned",
+            "New Agent Recruited: PlinkBot46",
+            "Global Airdrop: Distribution in Progress",
+            "Investment: 2.1 ETH from Wallet...8k2p",
+            "PlinkVault46: Database Integrity Verified",
+            "New User Joined from Japan",
+            "New User Joined from Brazil",
+            "Extraction Successful: 4.6 PLIK Claimed"
+        ];
+
+        function addEvent() {
+            const msg = events[Math.floor(Math.random() * events.length)];
+            const p = document.createElement('div');
+            p.innerText = `> ${msg}`;
+            p.style = "opacity: 0; transform: translateY(10px); transition: all 0.5s;";
+            feedContainer.prepend(p);
+
+            // Animate in
+            setTimeout(() => { p.style.opacity = 1; p.style.transform = "translateY(0)"; }, 50);
+
+            // Remove old
+            if (feedContainer.children.length > 5) {
+                feedContainer.lastChild.remove();
+            }
+
+            // Schedule next
+            setTimeout(addEvent, Math.random() * 3000 + 2000);
+        }
+
+        addEvent();
+    }
+    
+    // Start Feed
+    initGlobalFeed();
 });
 
 let mouseX = 0, mouseY = 0;
@@ -96,12 +145,14 @@ function initAgents() {
         { 
             name: "PlinkChain46", 
             role: "Blockchain Architect", 
+            img: "assets/avatars/agent_1.png",
             vow: "I forge the immutable ledger.",
             desc: "As the primary architect of the Plinkoverse, I weave the cryptographic fabric that holds our reality together. My code is not merely syntax; it is the digital DNA of a decentralized future, ensuring that every block mined is a testament to transparency and every transaction a verified truth in the infinite ledger of the 46."
         },
         { 
             name: "PlinkCode46", 
             role: "Smart Contract Developer", 
+            img: "assets/avatars/agent_2.png",
             vow: "Code is law, and I am its scribe.",
             desc: "I stand as the guardian of logic, writing the immutable laws that govern our ecosystem. My smart contracts are self-executing arbiters of justice, eliminating the need for trust by replacing it with mathematical certainty. In a world of chaos, my code provides the unshakeable order upon which empires are built."
         },
@@ -376,56 +427,131 @@ function initAgents() {
 
     // Clear existing
     tunnel.innerHTML = `
-        <div style="text-align: center; margin-bottom: 50px;">
-            <h2 style="font-size: 2.5rem; color: #fff; text-shadow: 0 0 20px #00d2ff;">THE PLINK46 LEGION</h2>
-            <p style="color: #888; letter-spacing: 2px;">SCROLL TO WITNESS THE ARCHITECTS</p>
+        <div style="text-align: center; margin-bottom: 100px; perspective: 1000px;">
+            <h2 style="font-size: 3rem; color: #fff; text-shadow: 0 0 30px #00d2ff; transform: translateZ(50px);">THE PLINK46 LEGION</h2>
+            <p style="color: #888; letter-spacing: 4px; font-weight: 300;">SCROLL TO WITNESS THE ARCHITECTS</p>
         </div>
     `;
+
+    // Global 3D Perspective for the Tunnel
+    tunnel.style.perspective = "2000px";
+    tunnel.style.transformStyle = "preserve-3d";
 
     agents.forEach((agent, index) => {
         const card = document.createElement('div');
         card.className = 'agent-card glass-panel';
-        card.style.marginBottom = '40px';
-        card.style.position = 'relative';
-        card.style.overflow = 'hidden';
+        // Base styles
+        Object.assign(card.style, {
+            marginBottom: '80px',
+            position: 'relative',
+            overflow: 'hidden',
+            transformStyle: 'preserve-3d', // Critical for 3D children
+            border: '1px solid rgba(0, 210, 255, 0.1)'
+        });
         
-        // Unique Visual ID (Placeholder for "Moving Photo")
-        // We use a CSS gradient that moves based on mouse
-        const hue = (index * 137.5) % 360; // Golden angle distribution for colors
-        
+        // Unique Visual ID & Color
+        const hue = (index * 137.5) % 360; 
+        const imgSrc = agent.img || `assets/avatars/agent_${index+1}.png`;
+
         card.innerHTML = `
-            <div class="agent-visual" style="
-                position: absolute; top: 0; left: 0; width: 100%; height: 5px; 
-                background: linear-gradient(90deg, transparent, hsl(${hue}, 80%, 60%), transparent);
-                box-shadow: 0 0 15px hsl(${hue}, 80%, 60%);
+            <!-- Moving Photo Background -->
+            <div class="agent-visual-bg" style="
+                position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                z-index: 0; opacity: 0.2; pointer-events: none;
+                background-image: url('${imgSrc}');
+                background-size: cover; background-position: center;
+                filter: grayscale(100%) contrast(1.2);
+                transition: all 0.5s ease;
             "></div>
-            
-            <div class="agent-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="agent-number" style="font-size: 1.5rem; color: rgba(255,255,255,0.2);">#${index + 1}</div>
-                <div class="agent-icon" style="
-                    width: 40px; height: 40px; border-radius: 50%; 
-                    background: hsl(${hue}, 20%, 20%); border: 1px solid hsl(${hue}, 50%, 50%);
-                    box-shadow: 0 0 10px hsl(${hue}, 50%, 50%, 0.2);
-                "></div>
+
+            <!-- Top Header -->
+            <div class="agent-header" style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2;">
+                <div class="agent-number" style="font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.05); line-height: 1;">
+                    ${String(index + 1).padStart(2, '0')}
+                </div>
+                <div class="agent-icon-wrapper" style="position: relative;">
+                    <img src="${imgSrc}" alt="Avatar" onerror="this.style.display='none'" style="
+                        width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
+                        border: 2px solid hsl(${hue}, 80%, 60%);
+                        box-shadow: 0 0 20px hsl(${hue}, 80%, 60%, 0.4);
+                    ">
+                </div>
             </div>
             
-            <div class="agent-info" style="margin-top: 20px; z-index: 2; position: relative;">
-                <h3 class="fling-text" style="font-size: 1.8rem; margin: 0; color: #fff;">${agent.name}</h3>
-                <div class="agent-role" style="color: var(--accent); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;">${agent.role}</div>
-                <div class="agent-vow" style="font-style: italic; opacity: 0.8; margin-bottom: 20px; border-left: 2px solid var(--accent); padding-left: 10px;">"${agent.vow}"</div>
-                <p class="agent-desc" style="line-height: 1.6; color: #ccc; font-size: 0.95rem;">${agent.desc}</p>
+            <!-- Content -->
+            <div class="agent-info" style="margin-top: 10px; z-index: 2; position: relative; padding: 0 10px;">
+                <h3 class="fling-text" style="font-size: 2.5rem; margin: 0; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">${agent.name}</h3>
+                <div class="agent-role" style="color: hsl(${hue}, 80%, 60%); font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 20px 0; font-weight: 700;">${agent.role}</div>
+                
+                <div class="agent-vow" style="
+                    font-style: italic; font-size: 1.1rem; color: #fff; 
+                    margin-bottom: 25px; border-left: 3px solid hsl(${hue}, 80%, 60%); 
+                    padding-left: 15px; background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
+                    padding-top: 10px; padding-bottom: 10px;
+                ">"${agent.vow}"</div>
+                
+                <p class="agent-desc" style="line-height: 1.8; color: #ddd; font-size: 1rem; font-weight: 300;">${agent.desc}</p>
             </div>
             
+            <!-- Hover Glow Effect -->
             <div class="hover-glow" style="
                 position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                width: 0; height: 0; background: radial-gradient(circle, hsl(${hue}, 50%, 50%, 0.1) 0%, transparent 70%);
-                transition: width 0.5s, height 0.5s; pointer-events: none; z-index: 0;
+                width: 0; height: 0; background: radial-gradient(circle, hsl(${hue}, 80%, 60%, 0.15) 0%, transparent 70%);
+                transition: width 0.3s, height 0.3s; pointer-events: none; z-index: 1; mix-blend-mode: screen;
             "></div>
         `;
         
         tunnel.appendChild(card);
 
-        // Interaction: "Lusion Style" Hover
+        // --- Lusion-style 3D Scroll Logic ---
+        if (typeof ScrollTrigger !== 'undefined') {
+            // 1. Entrance from Deep Space
+            gsap.fromTo(card, 
+                { 
+                    opacity: 0, 
+                    z: -1000,       // Start far back
+                    y: 100,         // And slightly down
+                    rotationX: 45,  // Tilted
+                    scale: 0.8
+                },
+                {
+                    opacity: 1, 
+                    z: 0, 
+                    y: 0,
+                    rotationX: 0, 
+                    scale: 1,
+                    duration: 1.5,
+                    ease: "power3.out", // Smooth landing
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 120%", // Start animating before it enters
+                        end: "top 70%",   // Finish when it's well in view
+                        scrub: 1          // Link to scrollbar
+                    }
+                }
+            );
+
+            // 2. Velocity-based Skew/Warp (The "Liquid" feel)
+            ScrollTrigger.create({
+                trigger: card,
+                onUpdate: (self) => {
+                    const vel = self.getVelocity(); // Pixels per second
+                    const skew = vel / 300; // Dampen
+                    const rot = vel / 500;
+
+                    // Apply skew to content for "fast" feel
+                    gsap.to(card, { 
+                        skewY: skew, 
+                        rotationX: -rot, // Tilt based on speed
+                        duration: 0.1, 
+                        overwrite: 'auto',
+                        ease: "power1.out"
+                    });
+                }
+            });
+        }
+
+        // --- Mouse Interaction ---
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -435,27 +561,34 @@ function initAgents() {
             const glow = card.querySelector('.hover-glow');
             glow.style.left = x + 'px';
             glow.style.top = y + 'px';
-            glow.style.width = '400px';
-            glow.style.height = '400px';
+            glow.style.width = '600px';
+            glow.style.height = '600px';
             
-            // Tilt effect
+            // High-Def Tilt
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg tilt
-            const rotateY = ((x - centerX) / centerX) * 5;
+            // More subtle, high-def tilt
+            const rotateX = ((y - centerY) / centerY) * -8; 
+            const rotateY = ((x - centerX) / centerX) * 8;
             
             gsap.to(card, {
-                transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`,
+                transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`,
+                boxShadow: `0 20px 50px -10px rgba(0,0,0,0.5), 0 0 20px hsl(${hue}, 80%, 60%, 0.3)`,
+                zIndex: 10,
                 duration: 0.1,
                 overwrite: 'auto'
             });
-            
-            // Scramble Text on Title occasionally
-            if (Math.random() < 0.05) {
-                const h3 = card.querySelector('h3');
-                // We don't want to destroy the DOM structure of fling-text, so maybe just color glitch
-                gsap.to(h3, { x: (Math.random()-0.5)*5, color: '#fff', duration: 0.1, onComplete: () => gsap.to(h3, {x:0}) });
-            }
+
+            // Parallax Background
+            const bg = card.querySelector('.agent-visual-bg');
+            gsap.to(bg, {
+                x: (x - centerX) * 0.05,
+                y: (y - centerY) * 0.05,
+                scale: 1.1,
+                opacity: 0.6,
+                filter: 'grayscale(0%) contrast(1.1)', // Colorize on hover
+                duration: 0.2
+            });
         });
 
         card.addEventListener('mouseleave', () => {
@@ -465,29 +598,20 @@ function initAgents() {
              
              gsap.to(card, {
                 transform: `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`,
-                duration: 0.5,
-                ease: "power2.out"
+                boxShadow: 'none',
+                zIndex: 1,
+                skewY: 0, // Reset skew
+                duration: 0.6,
+                ease: "elastic.out(1, 0.5)"
+            });
+
+            const bg = card.querySelector('.agent-visual-bg');
+            gsap.to(bg, {
+                x: 0, y: 0, scale: 1, opacity: 0.2,
+                filter: 'grayscale(100%) contrast(1.2)',
+                duration: 0.6
             });
         });
-
-        // Scroll Animation
-        if (typeof ScrollTrigger !== 'undefined') {
-            gsap.fromTo(card, 
-                { opacity: 0, y: 50, rotationX: 10 },
-                {
-                    opacity: 1, y: 0, rotationX: 0,
-                    duration: 1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 90%",
-                        end: "top 60%",
-                        toggleActions: "play none none reverse",
-                        scrub: false
-                    }
-                }
-            );
-        }
     });
     
     // Re-init fling for new titles

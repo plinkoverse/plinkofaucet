@@ -2,13 +2,13 @@
 const canvas = document.getElementById('plinko-board');
 const ctx = canvas.getContext('2d');
 
-// Game Config
-const ROWS = 12;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // Game Config
+const ROWS = 20; // 20 Rows -> 21 Buckets
 const PEG_RADIUS = 3;
 const BALL_RADIUS = 5;
-const GRAVITY = 0.4; // Increased gravity
-const FRICTION = 0.98; // Air resistance
-const BOUNCE = 0.5; // Dampen bounce
+const GRAVITY = 15.0; // "100x" feel
+const FRICTION = 0.98; 
+const BOUNCE = 0.1; // Almost no bounce
 
 // State
 let bankroll = 23000000.00;
@@ -18,8 +18,8 @@ let pegs = [];
 let buckets = [];
 let width, height;
 
-// Multipliers (13 items)
-const MULTIPLIERS = [100, 10, 5, 2, 0.2, 0.1, 0.1, 0.1, 0.2, 2, 5, 10, 100];
+// Multipliers (21 items for 20 Rows)
+const MULTIPLIERS = [10, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.3, 0.1, 0.3, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 10];
 // Ensure buckets match rows logic (Rows + 1 buckets usually)
 // For 12 rows, we need ~13 buckets. 
 // Let's dynamic gen multipliers or stick to this list and adjust rows.

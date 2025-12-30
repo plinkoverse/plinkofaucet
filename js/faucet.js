@@ -17,6 +17,14 @@ function updateDisplay() {
 // 2. The Extraction Logic
 if (claimBtn) {
     claimBtn.addEventListener('click', () => {
+        // 1. LOGIN CHECK
+        const user = localStorage.getItem('plink_user');
+        if (!user) {
+            alert("ACCESS DENIED: Please Login / Join the 46 Legion to extract resources.");
+            document.querySelector('.open-auth')?.click(); // Trigger login modal if possible
+            return;
+        }
+
         const now = Date.now();
         const lastClaim = localStorage.getItem('last_plik_claim') || 0;
         const cooldown = 24 * 60 * 60 * 1000; // 24 Hours
@@ -31,7 +39,8 @@ if (claimBtn) {
         let currentBal = parseFloat(localStorage.getItem('plik_balance')) || 0;
         let streak = parseInt(localStorage.getItem('plink_streak')) || 0;
         
-        currentBal += 46.00;
+        const claimAmount = 4.60;
+        currentBal += claimAmount;
         streak += 1;
 
         // BANKROLL UPDATE (Simulated Global State)
@@ -40,7 +49,7 @@ if (claimBtn) {
         
         // "Claim reflects in remaining supply"
         // Subtract claim from bankroll/supply
-        bankroll -= 46.00;
+        bankroll -= claimAmount;
         localStorage.setItem('plink_bankroll', bankroll.toFixed(4));
         
         // GENERATE UNIQUE RECEIPT HASH (The "Vapor-Token" Proof)

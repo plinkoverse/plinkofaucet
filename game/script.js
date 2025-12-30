@@ -6,9 +6,9 @@ const ctx = canvas.getContext('2d');
 const ROWS = 12;
 const PEG_RADIUS = 3;
 const BALL_RADIUS = 5;
-const GRAVITY = 0.2;
-const FRICTION = 0.5; // High friction for air resistance feel
-const BOUNCE = 0.6;
+const GRAVITY = 0.4; // Increased gravity
+const FRICTION = 0.98; // Air resistance
+const BOUNCE = 0.5; // Dampen bounce
 
 // State
 let bankroll = 23000000.00;
@@ -18,8 +18,8 @@ let pegs = [];
 let buckets = [];
 let width, height;
 
-// Multipliers (Simple curve: High edges, low center)
-const MULTIPLIERS = [10, 5, 2, 1, 0.5, 0.2, 0.2, 0.2, 0.5, 1, 2, 5, 10];
+// Multipliers (13 items)
+const MULTIPLIERS = [100, 10, 5, 2, 0.2, 0.1, 0.1, 0.1, 0.2, 2, 5, 10, 100];
 // Ensure buckets match rows logic (Rows + 1 buckets usually)
 // For 12 rows, we need ~13 buckets. 
 // Let's dynamic gen multipliers or stick to this list and adjust rows.
@@ -197,9 +197,14 @@ function loop() {
                 // Bounce
                 const nx = dx / dist;
                 const ny = dy / dist;
-                const jitter = (Math.random() - 0.5) * 2;
+                const jitter = (Math.random() - 0.5) * 1.5;
                 
-                b.vx += nx * 2 + jitter;
+                // Bias towards center if hitting outer pegs
+                let centerBias = 0;
+                if (b.x < width * 0.3) centerBias = 0.5; // Push right
+                if (b.x > width * 0.7) centerBias = -0.5; // Push left
+
+                b.vx += nx * 2 + jitter + centerBias;
                 b.vy *= -BOUNCE;
                 
                 const overlap = (BALL_RADIUS + PEG_RADIUS) - dist;
@@ -211,6 +216,15 @@ function loop() {
             }
         });
         
+        // Wall Bounce (Keep balls in play)
+        if (b.x < BALL_RADIUS) {
+            b.x = BALL_RADIUS;
+            b.vx *= -0.8;
+        } else if (b.x > width - BALL_RADIUS) {
+            b.x = width - BALL_RADIUS;
+            b.vx *= -0.8;
+        }
+
         // Draw Ball
         ctx.beginPath();
         ctx.arc(b.x, b.y, BALL_RADIUS, 0, Math.PI*2);

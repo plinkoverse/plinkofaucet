@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile - PLINKOVERSE</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div id="deep-space-bg"></div>
+
+    <div id="stats-hud" class="glass-panel">
+        <div class="balance-text">RESERVE: <span id="user-balance">0.0000</span> [PLIK]</div>
+        <nav style="margin-top: 10px;">
+            <a href="index.html" class="nav-link">PORTAL</a>
+            <a href="faucet.html" class="nav-link">EXTRACTION</a>
+            <a href="airdrop.html" class="nav-link">AIRDROP</a>
+            <a href="#" id="logout-btn" class="nav-link" style="color: #f55;">LOGOUT</a>
+        </nav>
+    </div>
+
+    <div class="container" style="margin-top: 120px;">
+        <div class="glass-panel">
+            <h1 style="color: var(--accent);">PILOT PROFILE</h1>
+            <div id="profile-content">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+
+        <div class="profile-grid">
+            <!-- KYC SECTION -->
+            <div class="glass-panel profile-card">
+                <h2>IDENTITY VERIFICATION</h2>
+                <div id="kyc-status-display" style="margin-bottom: 20px;">
+                    STATUS: <span class="status-badge status-unverified">UNVERIFIED</span>
+                </div>
+                
+                <div id="kyc-form-container">
+                    <form id="kyc-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>National ID / Passport</label>
+                            <input type="file" class="form-input" style="padding: 5px;" required>
+                        </div>
+                        <button type="submit" class="auth-btn">SUBMIT DOCUMENTS</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- STATS SECTION -->
+            <div class="glass-panel profile-card">
+                <h2>FLIGHT LOG</h2>
+                <p><strong>Total Claims:</strong> <span id="stat-claims">0</span></p>
+                <p><strong>Games Played:</strong> <span id="stat-games">0</span></p>
+                <p><strong>Total Winnings:</strong> <span id="stat-wins">0.00</span> [PLIK]</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Simple Profile Page Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('plink_user'));
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const content = document.getElementById('profile-content');
+            content.innerHTML = `
+                <p><strong>ID:</strong> ${user.id}</p>
+                <p><strong>EMAIL:</strong> ${user.email}</p>
+            `;
+
+            // Update KYC Status
+            const badge = document.querySelector('.status-badge');
+            const kycContainer = document.getElementById('kyc-form-container');
+            
+            if (user.kycStatus === 'verified') {
+                badge.className = 'status-badge status-verified';
+                badge.innerText = 'VERIFIED';
+                kycContainer.innerHTML = '<p style="color: #0f0;">You are fully verified. Access granted to all sectors.</p>';
+            } else {
+                badge.className = 'status-badge status-unverified';
+                badge.innerText = 'UNVERIFIED';
+            }
+
+            // Stats (Mock or from LocalStorage if tracked)
+            document.getElementById('stat-claims').innerText = localStorage.getItem('plink_streak') || 0;
+        });
+    </script>
+</body>
+</html>

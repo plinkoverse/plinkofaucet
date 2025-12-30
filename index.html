@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>PLINKOVERSE</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -17,7 +18,73 @@
             <a href="index.html" class="nav-link">PORTAL</a>
             <a href="faucet.html" class="nav-link">EXTRACTION</a>
             <a href="airdrop.html" class="nav-link">AIRDROP</a>
+            <a href="#" class="nav-link auth-only-guest open-auth">LOGIN / JOIN</a>
         </nav>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="auth-modal">
+        <div class="auth-container glass-panel">
+            <button id="close-auth" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #fff; cursor: pointer;">✕</button>
+            
+            <!-- LOGIN VIEW -->
+            <div id="view-login" class="auth-view">
+                <div class="auth-header">
+                    <h2>IDENTIFY</h2>
+                    <p>Enter your credentials pilot</p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Email Frequency</label>
+                        <input type="email" id="login-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Access Code</label>
+                        <input type="password" id="login-pass" class="form-input" required>
+                    </div>
+                    
+                    <!-- CAPTCHA -->
+                    <div class="form-group">
+                        <label>Security Verification (Click to Refresh)</label>
+                        <div class="captcha-container">
+                            <canvas id="captcha-canvas" width="150" height="50"></canvas>
+                            <input type="text" id="login-captcha" class="form-input" placeholder="ENTER CODE" required style="width: 120px;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="auth-btn">INITIATE SESSION</button>
+                </form>
+                <div class="switch-auth">
+                    New Pilot? <a id="to-register">Register Protocol</a>
+                </div>
+            </div>
+
+            <!-- REGISTER VIEW -->
+            <div id="view-register" class="auth-view" style="display: none;">
+                <div class="auth-header">
+                    <h2>ENLIST</h2>
+                    <p>Join the 46 Legion</p>
+                </div>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label>Email Frequency</label>
+                        <input type="email" id="reg-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Create Access Code</label>
+                        <input type="password" id="reg-pass" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Access Code</label>
+                        <input type="password" id="reg-pass-conf" class="form-input" required>
+                    </div>
+                    <button type="submit" class="auth-btn">ESTABLISH UPLINK</button>
+                </form>
+                <div class="switch-auth">
+                    Existing Pilot? <a id="to-login">Identify</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -67,5 +134,6 @@
     </div>
 
     <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
 </body>
 </html>

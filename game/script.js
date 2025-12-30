@@ -6,9 +6,9 @@ const ctx = canvas.getContext('2d');
 const ROWS = 20; // 20 Rows -> 21 Buckets
 const PEG_RADIUS = 3;
 const BALL_RADIUS = 5;
-const GRAVITY = 15.0; // "100x" feel
+const GRAVITY = 1.5; // Heavy but visible
 const FRICTION = 0.98; 
-const BOUNCE = 0.1; // Almost no bounce
+const BOUNCE = 0.2; // Low bounce
 
 // State
 let bankroll = 23000000.00;

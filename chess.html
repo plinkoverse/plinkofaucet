@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PLINKOVERSE | LIVE CHESS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chess.css">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Chess.js logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Font for 3D Text -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
+</head>
+<body>
+    <div id="deep-space-bg"></div>
+    
+    <!-- HUD -->
+    <div id="stats-hud" class="glass-panel">
+        <div class="balance-text">COMMUNITY BALANCE: <span id="pool-balance">4,600,000</span> [PLIK]</div>
+        <nav style="margin-top: 10px;">
+            <a href="index.html" class="nav-link">PORTAL</a>
+            <a href="faucet.html" class="nav-link">EXTRACTION</a>
+            <a href="profile.html" class="nav-link">PROFILE</a>
+            <span class="nav-link active" style="color: var(--accent);">PVP CHESS</span>
+        </nav>
+    </div>
+
+    <!-- Game Container -->
+    <div id="chess-container">
+        <div class="chess-ui-panel glass-panel left-panel">
+            <h2>GLOBAL LOG</h2>
+            <div id="move-history" class="scroller">
+                <!-- Moves go here -->
+                <div class="log-entry">> Match Initialized</div>
+                <div class="log-entry">> Waiting for players...</div>
+            </div>
+            <div class="status-box">
+                <div id="game-status">ACTIVE</div>
+                <div id="turn-indicator">WHITE TO MOVE</div>
+            </div>
+        </div>
+
+        <div id="canvas-wrapper">
+            <!-- Three.js Canvas Injected Here -->
+            <div id="loading-overlay">INITIALIZING 3D ASSETS...</div>
+        </div>
+
+        <div class="chess-ui-panel glass-panel right-panel">
+            <h2>CONTROLS</h2>
+            <p style="font-size: 0.9rem; color: #aaa;">
+                Anyone logged in can move. 
+                Vote for the next move or take control instantly if you hold > 1000 PLIK.
+            </p>
+            
+            <div class="player-card">
+                <div class="avatar white-team"></div>
+                <div class="info">
+                    <div class="name">WHITE LEGION</div>
+                    <div class="role">Global Community</div>
+                </div>
+            </div>
+
+            <div class="vs-divider">VS</div>
+
+            <div class="player-card">
+                <div class="avatar black-team"></div>
+                <div class="info">
+                    <div class="name">BLACK LEGION</div>
+                    <div class="role">The 46 AI</div>
+                </div>
+            </div>
+
+            <button id="reset-btn" class="auth-btn" style="margin-top: 20px; background: #333;">VOTE RESIGN</button>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/chess-game.js"></script>
+</body>
+</html>

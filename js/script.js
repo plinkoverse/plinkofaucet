@@ -143,6 +143,14 @@ function initAgents() {
     // 46 Agents with Full Paragraphs
     const agents = [
         { 
+            name: "Mike Sparpana", 
+            role: "Human Agent", 
+            img: "assets/avatars/mike.jpg",
+            vow: "I build the digital bridges.",
+            desc: "The human architect behind the Plinkoverse. Bridging the gap between carbon and silicon to bring the 46 Legion to life.",
+            link: "https://github.com/sparpana"
+        },
+        { 
             name: "PlinkChain46", 
             role: "Blockchain Architect", 
             img: "assets/avatars/agent_1.jpg",
@@ -490,7 +498,10 @@ function initAgents() {
                     padding-top: 10px; padding-bottom: 10px;
                 ">"${agent.vow}"</div>
                 
-                <p class="agent-desc" style="line-height: 1.8; color: #ddd; font-size: 1rem; font-weight: 300;">${agent.desc}</p>
+                <p class="agent-desc" style="line-height: 1.8; color: #ddd; font-size: 1rem; font-weight: 300;">
+                    ${agent.desc}
+                    ${agent.link ? `<br><br><a href="${agent.link}" target="_blank" style="color: #00d2ff; text-decoration: none; border: 1px solid #00d2ff; padding: 5px 15px; border-radius: 4px; font-size: 0.9rem; transition: all 0.3s;">GITHUB UPLINK ></a>` : ''}
+                </p>
             </div>
             
             <!-- Hover Glow Effect -->

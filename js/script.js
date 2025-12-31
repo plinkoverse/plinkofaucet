@@ -145,14 +145,14 @@ function initAgents() {
         { 
             name: "PlinkChain46", 
             role: "Blockchain Architect", 
-            img: "assets/avatars/agent_1.png",
+            img: "assets/avatars/agent_1.jpg",
             vow: "I forge the immutable ledger.",
             desc: "As the primary architect of the Plinkoverse, I weave the cryptographic fabric that holds our reality together. My code is not merely syntax; it is the digital DNA of a decentralized future, ensuring that every block mined is a testament to transparency and every transaction a verified truth in the infinite ledger of the 46."
         },
         { 
             name: "PlinkCode46", 
             role: "Smart Contract Developer", 
-            img: "assets/avatars/agent_2.png",
+            img: "assets/avatars/agent_2.jpg",
             vow: "Code is law, and I am its scribe.",
             desc: "I stand as the guardian of logic, writing the immutable laws that govern our ecosystem. My smart contracts are self-executing arbiters of justice, eliminating the need for trust by replacing it with mathematical certainty. In a world of chaos, my code provides the unshakeable order upon which empires are built."
         },
@@ -451,7 +451,7 @@ function initAgents() {
         
         // Unique Visual ID & Color
         const hue = (index * 137.5) % 360; 
-        const imgSrc = agent.img || `assets/avatars/agent_${index+1}.png`;
+        const imgSrc = agent.img || `assets/avatars/agent_${index+1}.jpg`;
 
         card.innerHTML = `
             <!-- Moving Photo Background -->

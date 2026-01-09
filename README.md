@@ -13,6 +13,10 @@ The Plinkoverse is a gamified [PLIK] distribution engine designed to build a 46,
 - **Data:** JSON-driven architecture for tokenomics and agent registries.
 - **Web3:** TON Connect integration (Manifesting).
 
+## ⚙️ Configuration
+To set up the project locally, copy `.env.example` to `.env` and configure your secrets.
+**Note:** Never commit your `.env` file or private keys to the repository.
+
 ## 💎 Tokenomics
 - **Total Supply:** 46,000,000 [PLIK]
 - **Faucet Allocation:** 11.5M [PLIK]
